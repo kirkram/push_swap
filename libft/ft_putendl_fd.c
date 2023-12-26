@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano@student.hive.fi <klukiano>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/03 15:14:43 by klukiano@st       #+#    #+#             */
-/*   Updated: 2023/11/03 15:22:17 by klukiano@st      ###   ########.fr       */
+/*   Created: 2023/11/03 15:14:43 by klukiano          #+#    #+#             */
+/*   Updated: 2023/12/26 14:50:39 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,6 @@
 
 void	ft_putendl_fd(char *s, int fd)
 {
-	int	i;
-
-	i = 0;
 	if (s)
 	{
 		while (*s != '\0')

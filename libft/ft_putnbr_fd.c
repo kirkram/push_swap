@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano@student.hive.fi <klukiano>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/03 15:15:09 by klukiano@st       #+#    #+#             */
-/*   Updated: 2023/11/03 17:59:01 by klukiano         ###   ########.fr       */
+/*   Created: 2023/11/03 15:15:09 by klukiano          #+#    #+#             */
+/*   Updated: 2023/12/26 14:50:44 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,6 @@ static void	putchar_fd(char c, int fd);
 
 void	ft_putnbr_fd(int n, int fd)
 {
-	int	i;
-
-	i = 0;
 	if (n == -2147483648)
 	{
 		putchar_fd('-', fd);

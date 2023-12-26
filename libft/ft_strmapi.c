@@ -14,7 +14,6 @@
 #include <stdlib.h>
 
 char		*ft_strmapi(char const *s, char (*f)(unsigned int, char));
-static int	strlen(char *str);
 
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
@@ -24,7 +23,7 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 	if (s && f)
 	{
 		i = 0;
-		copy = malloc((strlen((char *)s) + 1) * sizeof(*s));
+		copy = malloc((ft_strlen((char *)s) + 1) * sizeof(*s));
 		if (copy == NULL)
 			return (NULL);
 		while (s[i] != '\0')
@@ -36,14 +35,4 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 		return (copy);
 	}
 	return (NULL);
-}
-
-static int	strlen(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-		i ++;
-	return (i);
 }
