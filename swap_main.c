@@ -5,7 +5,9 @@
 
 t_list		*create_stack_a(int ac, char **av, t_list **save_params);
 t_list		*create_stack_b(t_list *save_params);
-t_list		*p_swap(stack_a, stack_b);
+//t_list		*p_swap(stack_a, stack_b);
+int			check_input(int ac, char **av);
+int			check_input_array(int *array, int ac);
 
 int	main(int ac, char **av)
 {
@@ -16,11 +18,16 @@ int	main(int ac, char **av)
 
 	//i = 0;
 	save_params = ft_lstnew(NULL); //dont forget to free
-	if (ac >= 2)
+	if (check_input(ac, av))
 	{
 		stack_a = create_stack_a(ac, av, &save_params);
 		stack_b = create_stack_b(save_params);
 		(void) stack_b;
+
+		//In case of error, it must display "Error" followed by a ’\n’ on the standard error.
+		//Errors include for example: some arguments aren’t integers, some arguments are
+		//bigger than an integer and/or there are duplicates.
+
 		//stack_a = p_swap(stack_a, stack_b, save_params);
 		while (stack_a->next)
 		{
@@ -29,8 +36,61 @@ int	main(int ac, char **av)
 		}
 	}
 	else
-		return (0);
+		printf("Error\n");
 	return (0);
+}
+
+int check_input(int ac, char **av)
+{
+	int i;
+	int j;
+	int *array;
+
+	array = malloc((ac - 1) * sizeof(int));
+	if (!array)
+		return (0);
+	i = 0;
+	if (ac == 1)
+		return (0);
+	while (++i < ac)
+	{
+		j = 0;
+		while (av[i][j])
+		{
+			if (av[i][j] == '-' && !ft_isdigit(av[i][j + 1]))
+				return (0);
+			else if (!ft_isdigit(av[i][j]) && av[i][j] != ' ')
+				return (0);
+			j++;
+		}
+		array[i-1] = ft_atoi(av[i]);		
+	}
+	if (!check_input_array(array, ac))
+		return (0);
+	free (array);
+	return (1);
+}
+//this function will check for duplicates and numbers that cant fit into int
+int check_input_array(int *array, int ac)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while (i < ac - 1)
+	{
+		j = 0;
+		while (j < ac - 1)
+		{
+			if (array[i] == array[j])
+				return (0);
+			j++;
+		}
+		//if (array[i] > 2147483647 || array[i] < -2147483648)
+		//	return (0);
+		i++;
+	}
+	return (1);
 }
 
 t_list	*create_stack_a(int ac, char **av, t_list **save_params)
@@ -39,6 +99,7 @@ t_list	*create_stack_a(int ac, char **av, t_list **save_params)
 	t_list	*list_ptr;
 	char	**str_array;
 	int		i;
+	//int		sign;
 
 	i = 0;
 	stack_a_head = ft_lstnew(NULL);
@@ -51,9 +112,18 @@ t_list	*create_stack_a(int ac, char **av, t_list **save_params)
 		(*save_params)->array_size = i;
 		i = 0;
 		while (i < (*save_params)->array_size)
-		{
+		{	
+			//sign = 0;
 			ft_lstadd_back(&list_ptr, ft_lstnew(NULL));
+			// if (str_array[i][0] = '-')
+			// 	sign = -1;
 			list_ptr->number = ft_atoi(str_array[i]);
+			// if (sign == -1 && list_ptr->number == 0 || sign == 0 && list_ptr->number == -1)
+			// {
+			// 	((*save_params)->array_size = -1);
+			// 	ft_lstclear(stack_a_head);
+			// 	break;
+			// }
 			list_ptr = list_ptr->next;
 			i ++;
 		}
@@ -88,13 +158,13 @@ t_list	*create_stack_b(t_list *save_params)
 	return (stack_b);
 }
 
-t_list	*p_swap(stack_a, stack_b)
-{
-	while (!is_sorted(stack_a))
-	{
+// t_list	*p_swap(stack_a, stack_b)
+// {
+// 	while (!is_sorted(stack_a))
+// 	{
 
-	}
-}
+// 	}
+// }
 
 int is_sorted(t_list *stack_a)
 {
@@ -109,144 +179,4 @@ int is_sorted(t_list *stack_a)
 	}
 	return (1);
 }
-
-//write function to swap first two elements of stack a and b, do nothing if there is only one or no elements
-
-void sa(t_list **stack_a)
-{
-	int temp;
-
-	if (*stack_a && (*stack_a)->next) 
-	{
-		temp = (*stack_a)->number;
-		(*stack_a)->number = (*stack_a)->next->number;
-		(*stack_a)->next->number = temp;
-	}
-}
-
-void sb(t_list **stack_b)
-{
-	int temp;
-
-	if (*stack_b && (*stack_b)->next) 
-	{
-		temp = (*stack_b)->number;
-		(*stack_b)->number = (*stack_b)->next->number;
-		(*stack_b)->next->number = temp;
-	}
-}
-
-void ss(t_list **stack_a, t_list **stack_b)
-{
-	sa(stack_a);
-	sb(stack_b);
-}
-
-void pa(t_list **stack_a, t_list **stack_b)
-{
-	t_list	*temp;
-
-	if (*stack_b)
-	{
-		temp = (*stack_b)->next;
-		(*stack_b)->next = *stack_a;
-		*stack_a = *stack_b;
-		*stack_b = temp;
-	}
-}
-
-void pb(t_list **stack_a, t_list **stack_b)
-{
-	t_list	*temp;
-
-	if (*stack_a)
-	{
-		temp = (*stack_a)->next;
-		(*stack_a)->next = *stack_b;
-		*stack_b = *stack_a;
-		*stack_a = temp;
-	}
-}
-
-void ra(t_list **stack_a)
-{
-	t_list	*temp;
-	t_list	*ptr;
-
-	if (*stack_a && (*stack_a)->next)
-	{
-		temp = *stack_a;
-		ptr = *stack_a;
-		while (ptr->next)
-			ptr = ptr->next;
-		*stack_a = (*stack_a)->next;
-		ptr->next = temp;
-		temp->next = NULL;
-	}
-}
-
-void rb(t_list **stack_b)
-{
-	t_list	*temp;
-	t_list	*ptr;
-
-	if (*stack_b && (*stack_b)->next)
-	{
-		temp = *stack_b;
-		ptr = *stack_b;
-		while (ptr->next)
-			ptr = ptr->next;
-		*stack_b = (*stack_b)->next;
-		ptr->next = temp;
-		temp->next = NULL;
-	}
-}
-
-void rr(t_list **stack_a, t_list **stack_b)
-{
-	ra(stack_a);
-	rb(stack_b);
-}
-
-
-void rra(t_list **stack_a)
-{
-	t_list *temp;
-	t_list *ptr;
-
-	if (*stack_a)
-	{
-		temp = *stack_a;
-		ptr = *stack_a;
-		while (ptr->next->next)
-			ptr = ptr->next;
-		*stack_a = ptr->next;
-		ptr->next = NULL;
-		(*stack_a)->next = temp;
-	}
-}
-
-void rrb(t_list **stack_b)
-{
-	t_list *temp;
-	t_list *ptr;
-
-	if (*stack_b)
-	{
-		temp = *stack_b;
-		ptr = *stack_b;
-		while (ptr->next->next)
-			ptr = ptr->next;
-		*stack_b = ptr->next;
-		ptr->next = NULL;
-		(*stack_b)->next = temp;
-	}
-}
-
-void rrr(t_list **stack_a, t_list **stack_b)
-{
-	rra(stack_a);
-	rrb(stack_b);
-}
-
 
