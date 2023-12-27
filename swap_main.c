@@ -7,7 +7,7 @@ t_list		*create_stack_a(int ac, char **av, t_list **save_params);
 t_list		*create_stack_b(t_list *save_params);
 //t_list		*p_swap(stack_a, stack_b);
 int			check_input(int ac, char **av);
-int			check_input_array(int *array, int ac);
+int			check_input_array(int *array, int ac, char **av);
 
 int	main(int ac, char **av)
 {
@@ -18,7 +18,7 @@ int	main(int ac, char **av)
 
 	//i = 0;
 	save_params = ft_lstnew(NULL); //dont forget to free
-	if (check_input(ac, av))
+	if (check_input(ac, av) && ac > 1)
 	{
 		stack_a = create_stack_a(ac, av, &save_params);
 		stack_b = create_stack_b(save_params);
@@ -50,28 +50,36 @@ int check_input(int ac, char **av)
 	if (!array)
 		return (0);
 	i = 0;
-	if (ac == 1)
-		return (0);
 	while (++i < ac)
 	{
 		j = 0;
 		while (av[i][j])
 		{
-			if (av[i][j] == '-' && !ft_isdigit(av[i][j + 1]))
+			if (av[i][j] == '-')
+			{
+				if (!ft_isdigit(av[i][j + 1]) || j != 0)
+				{
+					free (array);
+					return (0);
+				}
+			}
+			else if (!ft_isdigit(av[i][j]))
+			{
+				free (array);
 				return (0);
-			else if (!ft_isdigit(av[i][j]) && av[i][j] != ' ')
-				return (0);
+			}
 			j++;
 		}
-		array[i-1] = ft_atoi(av[i]);		
+		array[i - 1] = ft_atoi(av[i]);
 	}
-	if (!check_input_array(array, ac))
+	printf("passed the char check\n");	
+	if (!check_input_array(array, ac, av))
 		return (0);
 	free (array);
 	return (1);
 }
 //this function will check for duplicates and numbers that cant fit into int
-int check_input_array(int *array, int ac)
+int check_input_array(int *array, int ac, char **av)
 {
 	int i;
 	int j;
@@ -79,15 +87,17 @@ int check_input_array(int *array, int ac)
 	i = 0;
 	while (i < ac - 1)
 	{
-		j = 0;
+		j = i + 1;
 		while (j < ac - 1)
 		{
 			if (array[i] == array[j])
 				return (0);
 			j++;
 		}
-		//if (array[i] > 2147483647 || array[i] < -2147483648)
-		//	return (0);
+		if (array[i] == 0 && av[i + 1][0] != '0')
+			return (0);
+		if (array[i] == -1 && av[i + 1][0] != '-')
+			return (0);
 		i++;
 	}
 	return (1);
