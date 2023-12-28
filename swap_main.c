@@ -5,30 +5,24 @@
 
 t_list		*create_stack_a(int ac, char **av, t_list **save_params);
 t_list		*create_stack_b(t_list *save_params);
-//t_list		*p_swap(stack_a, stack_b);
+t_list		*p_swap(t_list *stack_a, t_list *stack_b, t_list *save_params);
 int			check_input(int ac, char **av);
 int			check_input_array(int *array, int ac, char **av);
+int			is_sorted(t_list *stack_a);
+t_list		*sort_3(t_list *stack_a);
 
 int	main(int ac, char **av)
 {
 	t_list	*stack_a;
 	t_list	*save_params;
 	t_list	*stack_b;
-	//int 	i;
 
-	//i = 0;
 	save_params = ft_lstnew(NULL); //dont forget to free
 	if (check_input(ac, av) && ac > 1)
 	{
 		stack_a = create_stack_a(ac, av, &save_params);
 		stack_b = create_stack_b(save_params);
-		(void) stack_b;
-
-		//In case of error, it must display "Error" followed by a ’\n’ on the standard error.
-		//Errors include for example: some arguments aren’t integers, some arguments are
-		//bigger than an integer and/or there are duplicates.
-
-		//stack_a = p_swap(stack_a, stack_b, save_params);
+		stack_a = p_swap(stack_a, stack_b, save_params);
 		while (stack_a->next)
 		{
 			printf("%d\n", stack_a->number); //ft_printf
@@ -37,6 +31,7 @@ int	main(int ac, char **av)
 	}
 	else
 		printf("Error\n");
+	free(save_params);
 	return (0);
 }
 
@@ -72,13 +67,12 @@ int check_input(int ac, char **av)
 		}
 		array[i - 1] = ft_atoi(av[i]);
 	}
-	printf("passed the char check\n");	
 	if (!check_input_array(array, ac, av))
 		return (0);
 	free (array);
 	return (1);
 }
-//this function will check for duplicates and numbers that cant fit into int
+
 int check_input_array(int *array, int ac, char **av)
 {
 	int i;
@@ -123,17 +117,8 @@ t_list	*create_stack_a(int ac, char **av, t_list **save_params)
 		i = 0;
 		while (i < (*save_params)->array_size)
 		{	
-			//sign = 0;
 			ft_lstadd_back(&list_ptr, ft_lstnew(NULL));
-			// if (str_array[i][0] = '-')
-			// 	sign = -1;
 			list_ptr->number = ft_atoi(str_array[i]);
-			// if (sign == -1 && list_ptr->number == 0 || sign == 0 && list_ptr->number == -1)
-			// {
-			// 	((*save_params)->array_size = -1);
-			// 	ft_lstclear(stack_a_head);
-			// 	break;
-			// }
 			list_ptr = list_ptr->next;
 			i ++;
 		}
@@ -168,14 +153,6 @@ t_list	*create_stack_b(t_list *save_params)
 	return (stack_b);
 }
 
-// t_list	*p_swap(stack_a, stack_b)
-// {
-// 	while (!is_sorted(stack_a))
-// 	{
-
-// 	}
-// }
-
 int is_sorted(t_list *stack_a)
 {
 	t_list	*ptr;
@@ -189,4 +166,80 @@ int is_sorted(t_list *stack_a)
 	}
 	return (1);
 }
+t_list		*p_swap(t_list *stack_a, t_list *stack_b, t_list *save_params)
+{
+	while (!is_sorted(stack_a))
+	{
+		
+	}
+	if (save_params->array_size == 3)
+		stack_a = sort_3(stack_a);
 
+
+	return (stack_a);
+}
+
+t_list	*sort_3(t_list *stack_a)
+{
+	stack_a = find_positions(stack_a);
+	//find smallest or biggest
+	//if (stack_a->number > stack_a->next);
+
+}
+
+t_list	*find_positions(t_list *stack)
+{
+	t_list	*ptr;
+	int		i;
+
+	ptr = stack;
+	i = 0; // careful with that 0 when calculating
+	while (ptr)
+	{
+		ptr->current_position = i;
+		ptr->min = 0;
+		ptr->max = 0;
+		ptr = ptr->next;
+		i ++;
+	}
+	ptr = stack;
+	while (ptr)
+	{
+		if (ptr->current_position > (i + 1) / 2)
+			ptr->above_middle = 1;
+		else
+			ptr->above_middle = 0;
+		ptr = ptr->next;
+	}
+	stack = find_min_max(stack);
+	return (stack);
+}
+
+t_list	*find_min_max(t_list *stack)
+{
+	t_list	*ptr;
+	int		min;
+	int		max;
+
+	ptr = stack;
+	min = ptr->number;
+	max = ptr->number;
+	while (ptr)
+	{
+		if (ptr->number < min)
+			min = ptr->number;
+		if (ptr->number > max)
+			max = ptr->number;
+		ptr = ptr->next;
+	}
+	ptr = stack;
+	while (ptr)
+	{
+		if (ptr->number == min)
+			ptr->min = 1;
+		if (ptr->number == max)
+			ptr->max = 1;
+		ptr = ptr->next;
+	}
+	return (stack);
+}	

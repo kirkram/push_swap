@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/03 12:31:10 by klukiano@st       #+#    #+#             */
-/*   Updated: 2023/12/26 19:04:31 by klukiano         ###   ########.fr       */
+/*   Created: 2023/11/03 12:31:10 by klukiano          #+#    #+#             */
+/*   Updated: 2023/12/28 15:36:32 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,10 @@ typedef struct s_list
 {
 	int				array_size;
 	int				number;
+	int				current_position;
+	bool			above_median;
+	bool			max;
+	bool			min;
 	void			*content;
 	struct s_list	*next;
 	struct s_list	*previous;
