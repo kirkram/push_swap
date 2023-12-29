@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 12:31:10 by klukiano          #+#    #+#             */
-/*   Updated: 2023/12/29 13:37:03 by klukiano         ###   ########.fr       */
+/*   Updated: 2023/12/29 18:57:53 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define LIBFT_H
 
 # include <stddef.h>
+# include <limits.h>
 
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
@@ -58,9 +59,11 @@ typedef struct s_list
 	int				above_middle;
 	int				max;
 	int				min;
+	int				price;
 	void			*content;
 	struct s_list	*next;
 	struct s_list	*previous;
+	struct s_list	*target_node;
 }					t_list;
 
 t_list	*ft_lstnew(void *content);
