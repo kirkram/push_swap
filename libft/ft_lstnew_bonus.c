@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*   ft_lstnew_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano@student.hive.fi <klukiano>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 12:58:13 by klukiano@st       #+#    #+#             */
-/*   Updated: 2023/11/07 15:30:45 by klukiano@st      ###   ########.fr       */
+/*   Updated: 2023/12/29 15:30:35 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_list	*ft_lstnew(void *content)
 {
 	t_list	*node;
 
-	node = malloc(sizeof(*node));
+	node = malloc(sizeof(t_list));
 	if (!node)
 		return (NULL);
 	node->content = content;

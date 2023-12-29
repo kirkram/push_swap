@@ -10,6 +10,8 @@ int			check_input(int ac, char **av);
 int			check_input_array(int *array, int ac, char **av);
 int			is_sorted(t_list *stack_a);
 t_list		*sort_3(t_list *stack_a);
+t_list		*find_positions(t_list *stack);
+t_list		*find_min_max(t_list *stack);
 
 int	main(int ac, char **av)
 {
@@ -20,11 +22,16 @@ int	main(int ac, char **av)
 	save_params = ft_lstnew(NULL); //dont forget to free
 	if (check_input(ac, av) && ac > 1)
 	{
+
 		stack_a = create_stack_a(ac, av, &save_params);
+		if (!stack_a)
+			return(printf("Error\n"));
 		stack_b = create_stack_b(save_params);
+
 		stack_a = p_swap(stack_a, stack_b, save_params);
-		while (stack_a->next)
+		while (stack_a)
 		{
+			printf("the posi is %d\n", stack_a->current_position);
 			printf("%d\n", stack_a->number); //ft_printf
 			stack_a = stack_a->next;
 		}
@@ -52,13 +59,18 @@ int check_input(int ac, char **av)
 		{
 			if (av[i][j] == '-')
 			{
-				if (!ft_isdigit(av[i][j + 1]) || j != 0)
+				if (!ft_isdigit(av[i][j + 1]))
+				{
+					free (array);
+					return (0);
+				}
+				else if (j != 0 && av[i][j - 1] != ' ')
 				{
 					free (array);
 					return (0);
 				}
 			}
-			else if (!ft_isdigit(av[i][j]))
+			else if (!ft_isdigit(av[i][j]) && av[i][j] != ' ')
 			{
 				free (array);
 				return (0);
@@ -116,10 +128,17 @@ t_list	*create_stack_a(int ac, char **av, t_list **save_params)
 		(*save_params)->array_size = i;
 		i = 0;
 		while (i < (*save_params)->array_size)
-		{	
-			ft_lstadd_back(&list_ptr, ft_lstnew(NULL));
+		{
 			list_ptr->number = ft_atoi(str_array[i]);
-			list_ptr = list_ptr->next;
+			if (str_array[i][0] != '-' && list_ptr->number == -1)
+				return (0);
+			else if (str_array[i][0] == '-' && list_ptr->number == 0)
+				return (0);
+			if (i < (*save_params)->array_size - 1) // i hate this condition need to fix
+			{
+				ft_lstadd_back(&list_ptr, ft_lstnew(NULL));
+				list_ptr = list_ptr->next;
+			}
 			i ++;
 		}
 	}
@@ -127,9 +146,12 @@ t_list	*create_stack_a(int ac, char **av, t_list **save_params)
 	{
 		while (++i < ac)
 		{
-			ft_lstadd_back(&list_ptr, ft_lstnew(NULL));
 			list_ptr->number = ft_atoi(av[i]);
-			list_ptr = list_ptr->next;
+			if (i < ac - 1) // i hate this condition need to fix
+			{
+				ft_lstadd_back(&list_ptr, ft_lstnew(NULL));
+				list_ptr = list_ptr->next;
+			}
 		}
 		(*save_params)->array_size = i - 1;
 	}
@@ -153,7 +175,7 @@ t_list	*create_stack_b(t_list *save_params)
 	return (stack_b);
 }
 
-int is_sorted(t_list *stack_a)
+int	is_sorted(t_list *stack_a)
 {
 	t_list	*ptr;
 
@@ -168,23 +190,41 @@ int is_sorted(t_list *stack_a)
 }
 t_list		*p_swap(t_list *stack_a, t_list *stack_b, t_list *save_params)
 {
-	while (!is_sorted(stack_a))
-	{
-		
-	}
+	(void)	stack_b;
 	if (save_params->array_size == 3)
 		stack_a = sort_3(stack_a);
-
-
+	if (is_sorted(stack_a))
+		printf("Should be sorted properly\n");
+	else
+		printf("There is a mistake\n");
 	return (stack_a);
 }
 
 t_list	*sort_3(t_list *stack_a)
 {
 	stack_a = find_positions(stack_a);
-	//find smallest or biggest
-	//if (stack_a->number > stack_a->next);
-
+	if (stack_a->min == 1 && stack_a->next->max == 0)
+		return (stack_a);
+	else if (stack_a->min == 1 && stack_a->next->max == 1)
+	{
+		sa(&stack_a);
+		ra(&stack_a);
+	}
+	else if (stack_a->max == 1 && stack_a->next->min == 0)
+	{
+		sa(&stack_a);
+		rra(&stack_a);
+	}
+	else if (stack_a->max == 1 && stack_a->next->min == 1)
+		ra(&stack_a);
+	else if (stack_a->max == 0 && stack_a->next->min == 1)
+		sa(&stack_a);
+	else if (stack_a->min == 0 && stack_a->next->max == 1)
+		rra(&stack_a);
+	else
+		printf("There is an error in sort_3\n");
+	stack_a = find_positions(stack_a);
+	return (stack_a);
 }
 
 t_list	*find_positions(t_list *stack)
@@ -242,4 +282,4 @@ t_list	*find_min_max(t_list *stack)
 		ptr = ptr->next;
 	}
 	return (stack);
-}	
+}

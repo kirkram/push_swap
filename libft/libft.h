@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 12:31:10 by klukiano          #+#    #+#             */
-/*   Updated: 2023/12/28 15:36:32 by klukiano         ###   ########.fr       */
+/*   Updated: 2023/12/29 13:37:03 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ typedef struct s_list
 	int				array_size;
 	int				number;
 	int				current_position;
-	bool			above_median;
-	bool			max;
-	bool			min;
+	int				above_middle;
+	int				max;
+	int				min;
 	void			*content;
 	struct s_list	*next;
 	struct s_list	*previous;
@@ -70,5 +70,17 @@ t_list	*ft_lstlast(t_list *lst);
 void	ft_lstadd_back(t_list **lst, t_list *new);
 void	ft_lstdelone(t_list *lst, void (*del)(void*));
 void	ft_lstclear(t_list **lst, void (*del)(void*));
+
+void	sa(t_list **stack_a);
+void	sb(t_list **stack_b);
+void	ss(t_list **stack_a, t_list **stack_b);
+void	pa(t_list **stack_a, t_list **stack_b);
+void	pb(t_list **stack_a, t_list **stack_b);
+void	ra(t_list **stack_a);
+void	rb(t_list **stack_b);
+void	rr(t_list **stack_a, t_list **stack_b);
+void	rra(t_list **stack_a);
+void	rrb(t_list **stack_b);
+void	rrr(t_list **stack_a, t_list **stack_b);
 
 #endif
