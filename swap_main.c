@@ -10,9 +10,10 @@ int			check_input(int ac, char **av);
 int			check_input_array(int *array, int ac, char **av);
 int			is_sorted(t_list *stack_a);
 t_list		*sort_3(t_list *stack_a);
-void		find_positions(t_list *stack);
+void		find_positions_and_minmax(t_list *stack);
 void		find_min_max(t_list *stack);
 void		assign_target_a(t_list *stack_a, t_list *stack_b);
+void		find_price_a(t_list *stack_a, t_list *stack_b);
 
 int	main(int ac, char **av)
 {
@@ -204,7 +205,7 @@ t_list		*p_swap(t_list *stack_a, t_list *stack_b, t_list *save_params)
 
 t_list	*sort_3(t_list *stack_a)
 {
-	find_positions(stack_a);
+	find_positions_and_minmax(stack_a);
 	if (stack_a->min == 1 && stack_a->next->max == 0)
 		return (stack_a);
 	else if (stack_a->min == 1 && stack_a->next->max == 1)
@@ -225,11 +226,11 @@ t_list	*sort_3(t_list *stack_a)
 		rra(&stack_a);
 	else
 		printf("There is an error in sort_3\n");
-	find_positions(stack_a);
+	find_positions_and_minmax(stack_a);
 	return (stack_a);
 }
 
-void	find_positions(t_list *stack)
+void	find_positions_and_minmax(t_list *stack)
 {
 	t_list	*ptr;
 	int		i;
@@ -255,7 +256,7 @@ void	find_positions(t_list *stack)
 		ptr = ptr->next;
 	}
 	find_min_max(stack);
-	find_price(stack);
+	//find_price(stack);
 }
 
 void	find_min_max(t_list *stack)
@@ -286,20 +287,25 @@ void	find_min_max(t_list *stack)
 	}
 }
 
-void	find_price(t_list *stack)
+void	find_price_a(t_list *stack_a, t_list *stack_b)
 {
-	t_list	*ptr;
+	t_list	*ptr_a;
 
-	ptr = stack;
-	while (ptr)
+	ptr_a = stack_a;
+	find_positions_and_minmax(stack_a);
+	find_positions_and_minmax(stack_b);
+	assign_target_a(stack_a, stack_b);
+	while (ptr_a)
 	{
-		ptr->price = how much to the top with the target node.
-		ptr = ptr->next;
+		
+		//ptr->price = //how much to the top with the target node.
+		ptr_a = ptr_a->next;
 	}
 }
 
 void	assign_target_a(t_list *stack_a, t_list *stack_b)
 {
+	//could be modified to be used for stack b as well?
 	t_list *ptr_a;
 	t_list *ptr_b;
 	int		diff;
