@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 12:31:10 by klukiano          #+#    #+#             */
-/*   Updated: 2023/12/29 18:57:53 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/01 19:23:58 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ typedef struct s_list
 	void			*content;
 	struct s_list	*next;
 	struct s_list	*previous;
-	struct s_list	*target_node;
+	struct s_list	*target;
 }					t_list;
 
 t_list	*ft_lstnew(void *content);
