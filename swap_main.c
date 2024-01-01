@@ -193,9 +193,16 @@ t_list		*p_swap(t_list *stack_a, t_list *stack_b, t_list *save_params)
 {
 	(void)	stack_b;
 	if (save_params->array_size == 3)
+	{
 		stack_a = sort_3(stack_a);
-	// else
-	// 	stack_a = sort_more(stack_a, stack_b);
+		return (stack_a);
+	}
+	while (stack_a->array_size > 3)
+	{
+		assign_a(&stack_a, &stack_b);
+		push_stack(&stack_a, &stack_b);
+	}
+	sort_3(stack_a);
 	if (is_sorted(stack_a))
 		printf("Should be sorted properly\n");
 	else
@@ -245,10 +252,10 @@ void	find_positions_and_minmax(t_list *stack)
 		ptr = ptr->next;
 		i ++;
 	}
-	stack->array_size = i;
 	ptr = stack;
 	while (ptr)
 	{
+		ptr->array_size = i;
 		if (ptr->current_position > (i + 1) / 2)
 			ptr->above_middle = 1;
 		else
@@ -287,9 +294,12 @@ void	find_min_max(t_list *stack)
 	}
 }
 
-void	find_price_a(t_list *stack_a, t_list *stack_b)
+void	assign_a(t_list *stack_a, t_list *stack_b)
 {
 	t_list	*ptr_a;
+	t_list	*target;
+	int		s_price_up;
+	int		s_price_down;
 
 	ptr_a = stack_a;
 	find_positions_and_minmax(stack_a);
@@ -297,10 +307,53 @@ void	find_price_a(t_list *stack_a, t_list *stack_b)
 	assign_target_a(stack_a, stack_b);
 	while (ptr_a)
 	{
-		
-		//ptr->price = //how much to the top with the target node.
+		target = ptr_a->target_node;
+		s_price_up = price_up (ptr_a, target);
+		s_price_down = price_down(ptr_a, target);
+		ptr_a->price = s_price_up;
+		if (s_price_down < s_price_up)
+			ptr_a->price = s_price_down;
+		if (ptr_a->above_middle != target->above_middle)
+			if (opposite_price(ptr_a, target) < ptr_a->price)
+				ptr_a->price = opposite_price(ptr_a, target);
+		// }
 		ptr_a = ptr_a->next;
 	}
+}
+
+int	price_up(t_list *ptr_a, t_list *target)
+{
+	int price;
+
+	price = ptr_a->current_position;
+	if (target->current_position > price)
+		price = target->current_position;
+	return (price);
+}
+
+int	price_down(t_list *ptr_a, t_list *target)
+{
+	int price;
+
+	price = ptr_a->array_size - ptr_a->current_position;
+	if (target->array_size - target->current_position > price)
+		price = target->array_size - target->current_position;
+	return (price);
+}
+
+int	opposite_price(t_list *ptr_a, t_list *target)
+{
+	int price;
+	int size_a;
+	int size_b;
+
+	size_a = ptr_a->array_size;
+	size_b = target->array_size;
+	if (ptr_a->above_middle == 1)
+		price = ptr_a->current_position + size_b - target->current_position;
+	else
+		price = size_a - ptr_a->current_position + target->current_position;
+	return (price);
 }
 
 void	assign_target_a(t_list *stack_a, t_list *stack_b)
@@ -332,8 +385,11 @@ void	assign_target_a(t_list *stack_a, t_list *stack_b)
 		ptr_a = ptr_a->next;
 	}
 }
-// t_list	*sort_more(t_list *stack_a, t_list *stack_b)
-// {
-// 	//tiny sort for
+void	push_stack(t_list **stack_a, t_list **stack_b);
+{
+	t_list *cheapest;
 
-// }
+	cheapest = find_cheapest(stack_a);
+
+
+}

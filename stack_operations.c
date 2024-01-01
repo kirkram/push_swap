@@ -18,9 +18,9 @@ void sa(t_list **stack_a)
 
 	if (*stack_a && (*stack_a)->next)
 	{
-		temp = (*stack_a)->number;
-		(*stack_a)->number = (*stack_a)->next->number;
-		(*stack_a)->next->number = temp;
+		temp = *stack_a;
+		*stack_a = (*stack_a)->next;
+		(*stack_a)->next = temp;
 	}
 }
 
@@ -30,9 +30,9 @@ void sb(t_list **stack_b)
 
 	if (*stack_b && (*stack_b)->next)
 	{
-		temp = (*stack_b)->number;
-		(*stack_b)->number = (*stack_b)->next->number;
-		(*stack_b)->next->number = temp;
+		temp = *stack_b;
+		(*stack_b)->number = (*stack_b)->next;
+		(*stack_b)->next = temp;
 	}
 }
 
