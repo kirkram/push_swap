@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 12:31:10 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/01 19:23:58 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/03 13:15:08 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef struct s_list
 	int				array_size;
 	int				number;
 	int				current_position;
-	int				above_middle;
+	int				above_m;
 	int				max;
 	int				min;
 	int				price;
@@ -85,5 +85,9 @@ void	rr(t_list **stack_a, t_list **stack_b);
 void	rra(t_list **stack_a);
 void	rrb(t_list **stack_b);
 void	rrr(t_list **stack_a, t_list **stack_b);
+
+int			check_input(int ac, char **av);
+int			check_input_array(int *array, int ac, char **av);
+int			is_sorted(t_list *stack_a);
 
 #endif
