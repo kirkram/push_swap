@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 12:31:10 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/04 13:03:47 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/04 17:08:16 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stddef.h>
 # include <limits.h>
+# include "../printf/ft_printf.h"
 
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);

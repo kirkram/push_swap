@@ -12,9 +12,9 @@
 
 #include "libft/libft.h"
 
-void sa(t_list **stack_a)
+void	sa(t_list **stack_a)
 {
-	t_list *temp;
+	t_list	*temp;
 
 	if (*stack_a && (*stack_a)->next)
 	{
@@ -23,9 +23,10 @@ void sa(t_list **stack_a)
 		temp->next = (*stack_a)->next;
 		(*stack_a)->next = temp;
 	}
+	ft_printf("sa\n");
 }
 
-void sb(t_list **stack_b)
+void	sb(t_list **stack_b)
 {
 	t_list	*temp;
 
@@ -36,15 +37,31 @@ void sb(t_list **stack_b)
 		temp->next = (*stack_b)->next;
 		(*stack_b)->next = temp;
 	}
+	ft_printf("sb\n");
 }
 
-void ss(t_list **stack_a, t_list **stack_b)
+void	ss(t_list **stack_a, t_list **stack_b)
 {
-	sa(stack_a);
-	sb(stack_b);
+	t_list	*temp;
+
+	if (*stack_a && (*stack_a)->next)
+	{
+		temp = *stack_a;
+		*stack_a = (*stack_a)->next;
+		temp->next = (*stack_a)->next;
+		(*stack_a)->next = temp;
+	}
+	if (*stack_b && (*stack_b)->next)
+	{
+		temp = *stack_b;
+		*stack_b = (*stack_b)->next;
+		temp->next = (*stack_b)->next;
+		(*stack_b)->next = temp;
+	}
+	ft_printf("ss\n");
 }
 
-void pa(t_list **stack_a, t_list **stack_b)
+void	pa(t_list **stack_a, t_list **stack_b)
 {
 	t_list	*temp;
 
@@ -55,9 +72,10 @@ void pa(t_list **stack_a, t_list **stack_b)
 		*stack_a = *stack_b;
 		*stack_b = temp;
 	}
+	ft_printf("pa\n");
 }
 
-void pb(t_list **stack_a, t_list **stack_b)
+void	pb(t_list **stack_a, t_list **stack_b)
 {
 	t_list	*temp;
 
@@ -68,9 +86,10 @@ void pb(t_list **stack_a, t_list **stack_b)
 		*stack_b = *stack_a;
 		*stack_a = temp;
 	}
+	ft_printf("pb\n");
 }
 
-void ra(t_list **stack_a)
+void	ra(t_list **stack_a)
 {
 	t_list	*temp;
 	t_list	*ptr;
@@ -85,9 +104,10 @@ void ra(t_list **stack_a)
 		ptr->next = temp;
 		temp->next = NULL;
 	}
+	ft_printf("ra\n");
 }
 
-void rb(t_list **stack_b)
+void	rb(t_list **stack_b)
 {
 	t_list	*temp;
 	t_list	*ptr;
@@ -102,18 +122,41 @@ void rb(t_list **stack_b)
 		ptr->next = temp;
 		temp->next = NULL;
 	}
+	ft_printf("rb\n");
 }
 
-void rr(t_list **stack_a, t_list **stack_b)
+void	rr(t_list **stack_a, t_list **stack_b)
 {
-	ra(stack_a);
-	rb(stack_b);
+	t_list	*temp;
+	t_list	*ptr;
+
+	if (*stack_a && (*stack_a)->next)
+	{
+		temp = *stack_a;
+		ptr = *stack_a;
+		while (ptr->next)
+			ptr = ptr->next;
+		*stack_a = (*stack_a)->next;
+		ptr->next = temp;
+		temp->next = NULL;
+	}
+	if (*stack_b && (*stack_b)->next)
+	{
+		temp = *stack_b;
+		ptr = *stack_b;
+		while (ptr->next)
+			ptr = ptr->next;
+		*stack_b = (*stack_b)->next;
+		ptr->next = temp;
+		temp->next = NULL;
+	}
+	ft_printf("rr\n");
 }
 
-void rra(t_list **stack_a)
+void	rra(t_list **stack_a)
 {
-	t_list *temp;
-	t_list *ptr;
+	t_list	*temp;
+	t_list	*ptr;
 
 	if (*stack_a)
 	{
@@ -125,12 +168,13 @@ void rra(t_list **stack_a)
 		ptr->next = NULL;
 		(*stack_a)->next = temp;
 	}
+	ft_printf("rra\n");
 }
 
-void rrb(t_list **stack_b)
+void	rrb(t_list **stack_b)
 {
-	t_list *temp;
-	t_list *ptr;
+	t_list	*temp;
+	t_list	*ptr;
 
 	if (*stack_b)
 	{
@@ -142,10 +186,33 @@ void rrb(t_list **stack_b)
 		ptr->next = NULL;
 		(*stack_b)->next = temp;
 	}
+	ft_printf("rrb\n");
 }
 
-void rrr(t_list **stack_a, t_list **stack_b)
+void	rrr(t_list **stack_a, t_list **stack_b)
 {
-	rra(stack_a);
-	rrb(stack_b);
+	t_list	*temp;
+	t_list	*ptr;
+
+	if (*stack_a)
+	{
+		temp = *stack_a;
+		ptr = *stack_a;
+		while (ptr->next->next)
+			ptr = ptr->next;
+		*stack_a = ptr->next;
+		ptr->next = NULL;
+		(*stack_a)->next = temp;
+	}
+	if (*stack_b)
+	{
+		temp = *stack_b;
+		ptr = *stack_b;
+		while (ptr->next->next)
+			ptr = ptr->next;
+		*stack_b = ptr->next;
+		ptr->next = NULL;
+		(*stack_b)->next = temp;
+	}
+	ft_printf("rrr\n");
 }
