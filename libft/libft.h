@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 12:31:10 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/03 13:15:08 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/04 13:03:47 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,6 @@ void	rrr(t_list **stack_a, t_list **stack_b);
 int			check_input(int ac, char **av);
 int			check_input_array(int *array, int ac, char **av);
 int			is_sorted(t_list *stack_a);
+int			is_sorted_reverse(t_list *stack_a); //helper, delete
 
 #endif

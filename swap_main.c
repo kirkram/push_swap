@@ -13,12 +13,13 @@ void		sort_3(t_list **stack_a);
 void		find_positions_and_minmax(t_list *stack);
 void		find_min_max(t_list *stack);
 void		assign_target_a(t_list *stack_a, t_list *stack_b);
-void		assign_a(t_list *stack_a, t_list *stack_b);
+void		price_a(t_list *stack_a, t_list *stack_b);
 void		push_cheapest(t_list **stack_a, t_list **stack_b);
 t_list		*find_cheapest(t_list **stack_a);
 int			price_up(t_list *ptr_a, t_list *target);
 int			price_down(t_list *ptr_a, t_list *target);
 int			opposite_price(t_list *ptr_a, t_list *target);
+void		print_current_stack(t_list *stack_a,t_list *stack_b);
 
 int	main(int ac, char **av)
 {
@@ -29,27 +30,16 @@ int	main(int ac, char **av)
 	save_params = ft_lstnew(NULL); //dont forget to free
 	if (check_input(ac, av) && ac > 1)
 	{
-
 		stack_a = create_stack_a(ac, av, &save_params);
 		if (!stack_a)
 			return(printf("Error\n"));
-		//stack_b = create_stack_b(save_params);
 		stack_b = NULL;
 		p_swap(&stack_a, &stack_b, save_params);
-		printf("Printing stack_a...\n");
-		while (stack_a)
-		{
-			//printf("the posi is %d\n", stack_a->current_position);
-			printf("%d\n", stack_a->number); //ft_printf
-			stack_a = stack_a->next;
-		}
-		printf("Printing stack_b...\n");
-		while (stack_b)
-		{
-			//printf("the posi is %d\n", stack_a->current_position);
-			printf("%d\n", stack_b->number); //ft_printf
-			stack_b = stack_b->next;
-		}
+		print_current_stack(stack_a, stack_b);
+		if (is_sorted(stack_a) && is_sorted_reverse(stack_b))
+			printf("First phase sorted properly!\n\n");
+		else
+			printf("There is a mistake in phase 1\n\n");
 	}
 	else
 		printf("Error\n");
@@ -115,56 +105,57 @@ void	p_swap(t_list **stack_a, t_list **stack_b, t_list *save_params)
 	pb(stack_a, stack_b);
 	if ((*stack_b)->number < (*stack_b)->next->number)
 		sb(stack_b);
-	assign_a(*stack_a, *stack_b);
+	price_a(*stack_a, *stack_b);
 	// int *array_visual_a = malloc((*stack_a)->array_size * sizeof(int));
 	// int *array_visual_b = malloc((*stack_a)->array_size * sizeof(int));
-	t_list *ptr_a;
-	t_list *ptr_b;
+
 	while ((*stack_a)->array_size > 3)
 	{
 		push_cheapest(stack_a, stack_b);
-		assign_a(*stack_a, *stack_b);
-		ptr_a = *stack_a;
-		ptr_b = *stack_b;
+		price_a(*stack_a, *stack_b);
 
-		printf("Stack A\t\tStack B\n");
-		printf("-------\t\t-------\n");
-
-		// Iterate as long as either stack has elements
-		while (ptr_a != NULL || ptr_b != NULL)
-		{
-			// Check if stack_a has an element
-			if (ptr_a != NULL)
-			{
-				printf("%d\t\t", ptr_a->number);
-				ptr_a = ptr_a->next;
-			}
-			else
-				printf(" \t\t");
-			// Check if stack_b has an element
-			if (ptr_b != NULL)
-			{
-				printf("%d\n", ptr_b->number);
-				ptr_b = ptr_b->next;
-			}
-			else
-				printf("\n");
-		}
-		printf("\n");
+		//print_current_stack(*stack_a, *stack_b);
 	}
-	//assign_a(*stack_a, *stack_b);
 	while((*stack_b)->max != 1)
 		rb(stack_b);
 	if ((*stack_a)->array_size == 3)
 	{
-		printf("sort 3 after pushing\n");
+		printf("\n...sort 3 after pushing...\n");
 		sort_3(stack_a);
 	}
-	if (is_sorted(*stack_a) && is_sorted(*stack_b))
-		printf("First phase sorted properly\n");
-	else
-		printf("There is a mistake in phase 1\n");
 }
+
+void	print_current_stack(t_list *stack_a,t_list *stack_b)
+{
+	t_list *ptr_a;
+	t_list *ptr_b;
+
+	printf("Stack A\t\tStack B\n");
+	printf("-------\t\t-------\n");
+
+	ptr_a = stack_a;
+	ptr_b = stack_b;
+
+	while (ptr_a != NULL || ptr_b != NULL)
+	{
+		if (ptr_a != NULL)
+		{
+			printf("%d\t\t", ptr_a->number);
+			ptr_a = ptr_a->next;
+		}
+		else
+			printf(" \t\t");
+		if (ptr_b != NULL)
+		{
+			printf("%d\n", ptr_b->number);
+			ptr_b = ptr_b->next;
+		}
+		else
+			printf("\n");
+	}
+	printf("\n");
+}
+
 
 void	sort_3(t_list **stack_a)
 {
@@ -190,6 +181,36 @@ void	sort_3(t_list **stack_a)
 	else
 		printf("There is an error in sort_3\n");
 	find_positions_and_minmax((*stack_a));
+}
+
+void	price_a(t_list *stack_a, t_list *stack_b)
+{
+	t_list	*ptr_a;
+	t_list	*target_node;
+	int		s_price_up;
+	int		s_price_down;
+
+	ptr_a = stack_a;
+	find_positions_and_minmax(stack_a);
+	find_positions_and_minmax(stack_b);
+	assign_target_a(stack_a, stack_b);
+	// if (stack_a->target)
+	// 	printf("the target for the first A node is %d", stack_a->target->number);
+	while (ptr_a)
+	{
+		target_node = ptr_a->target;
+		s_price_up = price_up(ptr_a, target_node);
+		s_price_down = price_down(ptr_a, target_node);
+		ptr_a->price = s_price_up + 1;
+		if (s_price_down < s_price_up)
+			ptr_a->price = s_price_down + 1;
+		if (!target_node)
+			ptr_a->price += 1;
+		if (target_node && ptr_a->above_m != target_node->above_m)
+			if ((opposite_price(ptr_a, target_node) + 1) < ptr_a->price)
+				ptr_a->price = opposite_price(ptr_a, target_node) + 1;
+		ptr_a = ptr_a->next;
+	}
 }
 
 void	find_positions_and_minmax(t_list *stack)
@@ -249,34 +270,6 @@ void	find_min_max(t_list *stack)
 	}
 }
 
-void	assign_a(t_list *stack_a, t_list *stack_b)
-{
-	t_list	*ptr_a;
-	t_list	*target_node;
-	int		s_price_up;
-	int		s_price_down;
-
-	ptr_a = stack_a;
-	find_positions_and_minmax(stack_a);
-	find_positions_and_minmax(stack_b);
-	assign_target_a(stack_a, stack_b);
-	// if (stack_a->target)
-	// 	printf("the target for the first A node is %d", stack_a->target->number);
-	while (ptr_a)
-	{
-		target_node = ptr_a->target;
-		s_price_up = price_up(ptr_a, target_node);
-		s_price_down = price_down(ptr_a, target_node);
-		ptr_a->price = s_price_up + 1;
-		if (s_price_down < s_price_up)
-			ptr_a->price = s_price_down + 1;
-		if (target_node && ptr_a->above_m != target_node->above_m)
-			if ((opposite_price(ptr_a, target_node) + 1) < ptr_a->price)
-				ptr_a->price = opposite_price(ptr_a, target_node) + 1;
-		ptr_a = ptr_a->next;
-	}
-}
-
 void	assign_target_a(t_list *stack_a, t_list *stack_b)
 {
 	//could be modified to be used for stack b as well?
@@ -313,9 +306,14 @@ void	assign_target_a(t_list *stack_a, t_list *stack_b)
 void	push_cheapest(t_list **stack_a, t_list **stack_b)
 {
 	t_list *cheapest;
+	t_list *min_n;
+
+	int	tempnumcheapest;
 
 	cheapest = find_cheapest(stack_a);
-	// NULL Point
+	tempnumcheapest = cheapest->number;
+	if (tempnumcheapest == -37175)
+		printf("found bitch number\n");
 	if (!cheapest->target)
 	{
 		if (cheapest->above_m)
@@ -324,10 +322,20 @@ void	push_cheapest(t_list **stack_a, t_list **stack_b)
 		else
 			while (*stack_a != cheapest)
 				rra(stack_a);
+		// potentialy increases the amoint of moves?
+		min_n = *stack_b;
+		while (min_n->min != 1)
+			min_n = min_n->next;
+		if (min_n->above_m)
+			while (min_n->next != NULL)
+				rb(stack_b);
+		else if (!min_n->above_m)
+			while (min_n->next != NULL)
+				rrb(stack_b);
 	}
 	else if (cheapest->above_m && cheapest->target->above_m)
 	{
-		while (*stack_a != cheapest && *stack_b != cheapest->target)
+		while (*stack_a != cheapest || *stack_b != cheapest->target)
 		{
 			if (*stack_a != cheapest && *stack_b != cheapest->target)
 				rr(stack_a, stack_b);
@@ -338,11 +346,10 @@ void	push_cheapest(t_list **stack_a, t_list **stack_b)
 			else
 				printf("Mistake in the push stack 1\n");
 		}
-
 	}
 	else if (!(cheapest)->above_m && !(cheapest)->target->above_m)
 	{
-		while (*stack_a != cheapest && *stack_b != cheapest->target)
+		while (*stack_a != cheapest || *stack_b != cheapest->target)
 		{
 			if (*stack_a != cheapest && *stack_b != cheapest->target)
 				rrr(stack_a, stack_b);
@@ -376,8 +383,8 @@ void	push_cheapest(t_list **stack_a, t_list **stack_b)
 	else
 		printf("Mistake in the push stack 4\n");
 	pb(stack_a, stack_b);
-	//if (!cheapest->target)
-	//	rb(stack_b);
+	if (!cheapest->target)
+		rb(stack_b);
 }
 
 t_list	*find_cheapest(t_list **stack_a)
@@ -395,7 +402,6 @@ t_list	*find_cheapest(t_list **stack_a)
 	}
 	return (cheapest);
 }
-
 
 int	price_up(t_list *ptr_a, t_list *target)
 {
