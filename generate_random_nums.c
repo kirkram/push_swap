@@ -3,7 +3,7 @@
 #include <time.h>
 
 # ifndef MAX_RANGE
-#  define MAX_RANGE 500
+#  define MAX_RANGE 1000
 # endif
 
 int main() {

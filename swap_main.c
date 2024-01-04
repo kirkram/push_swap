@@ -20,6 +20,10 @@ int			price_up(t_list *ptr_a, t_list *target);
 int			price_down(t_list *ptr_a, t_list *target);
 int			opposite_price(t_list *ptr_a, t_list *target);
 void		print_current_stack(t_list *stack_a,t_list *stack_b);
+t_list		*find_max(t_list *stack);
+void		p_swap_2(t_list **stack_a, t_list **stack_b);
+void		assign_target_b(t_list *stack_a, t_list *stack_b);
+t_list		*find_min(t_list *stack);
 
 int	main(int ac, char **av)
 {
@@ -35,11 +39,13 @@ int	main(int ac, char **av)
 			return(printf("Error\n"));
 		stack_b = NULL;
 		p_swap(&stack_a, &stack_b, save_params);
+		//print_current_stack(stack_a, stack_b);
+		p_swap_2(&stack_a, &stack_b);
 		print_current_stack(stack_a, stack_b);
 		if (is_sorted(stack_a) && is_sorted_reverse(stack_b))
-			printf("First phase sorted properly!\n\n");
+			printf("sorted properly!\n\n");
 		else
-			printf("There is a mistake in phase 1\n\n");
+			printf("There is a mistake\n\n");
 	}
 	else
 		printf("Error\n");
@@ -98,6 +104,8 @@ t_list	*create_stack_a(int ac, char **av, t_list **save_params)
 
 void	p_swap(t_list **stack_a, t_list **stack_b, t_list *save_params)
 {
+	t_list	*ptr;
+
 	(*stack_a)->array_size = save_params->array_size;
 	if ((*stack_a)->array_size == 3)
 		sort_3(stack_a);
@@ -106,23 +114,55 @@ void	p_swap(t_list **stack_a, t_list **stack_b, t_list *save_params)
 	if ((*stack_b)->number < (*stack_b)->next->number)
 		sb(stack_b);
 	price_a(*stack_a, *stack_b);
-	// int *array_visual_a = malloc((*stack_a)->array_size * sizeof(int));
-	// int *array_visual_b = malloc((*stack_a)->array_size * sizeof(int));
-
 	while ((*stack_a)->array_size > 3)
 	{
 		push_cheapest(stack_a, stack_b);
 		price_a(*stack_a, *stack_b);
-
-		//print_current_stack(*stack_a, *stack_b);
 	}
-	while((*stack_b)->max != 1)
-		rb(stack_b);
+	ptr = find_max(*stack_b);
+	if (ptr->above_m)
+		while((*stack_b)->max != 1)
+			rb(stack_b);
+	else if (!ptr->above_m)
+		while((*stack_b)->max != 1)
+			rrb(stack_b);
 	if ((*stack_a)->array_size == 3)
 	{
 		printf("\n...sort 3 after pushing...\n");
 		sort_3(stack_a);
 	}
+}
+
+void	p_swap_2(t_list **stack_a, t_list **stack_b)
+{
+	t_list *min_n;
+	while (*stack_b)
+	{
+		assign_target_b(*stack_a, *stack_b);
+		find_positions_and_minmax(*stack_a);
+		if (!(*stack_b)->target)
+			while (!(*stack_b)->target)
+				pa(stack_a, stack_b);
+		else
+		{
+			if ((*stack_b)->target->above_m)
+				while (*stack_a != (*stack_b)->target)
+					ra(stack_a);
+			else
+				while (*stack_a != (*stack_b)->target)
+					rra(stack_a);
+			pa(stack_a, stack_b);
+		}
+		//print_current_stack(*stack_a, *stack_b);
+	}
+	find_positions_and_minmax(*stack_a);
+	min_n = find_min(*stack_a);
+	if (min_n->above_m)
+		while (*stack_a != min_n)
+			ra(stack_a);
+	else
+		while (*stack_a != min_n)
+			rra(stack_a);
 }
 
 void	print_current_stack(t_list *stack_a,t_list *stack_b)
@@ -272,18 +312,14 @@ void	find_min_max(t_list *stack)
 
 void	assign_target_a(t_list *stack_a, t_list *stack_b)
 {
-	//could be modified to be used for stack b as well?
 	t_list *ptr_a;
 	t_list *ptr_b;
 	int		diff;
 	int		smallest_diff;
 
-	int		testnumber;
-
 	ptr_a = stack_a;
 	while (ptr_a)
 	{
-		testnumber = ptr_a->number;
 		ptr_b = stack_b;
 		smallest_diff = INT_MAX;
 		ptr_a->target = NULL;
@@ -303,6 +339,7 @@ void	assign_target_a(t_list *stack_a, t_list *stack_b)
 		ptr_a = ptr_a->next;
 	}
 }
+
 void	push_cheapest(t_list **stack_a, t_list **stack_b)
 {
 	t_list *cheapest;
@@ -312,8 +349,8 @@ void	push_cheapest(t_list **stack_a, t_list **stack_b)
 
 	cheapest = find_cheapest(stack_a);
 	tempnumcheapest = cheapest->number;
-	if (tempnumcheapest == -37175)
-		printf("found bitch number\n");
+	// if (tempnumcheapest == -37175)
+	// 	printf("found bitch number\n");
 	if (!cheapest->target)
 	{
 		if (cheapest->above_m)
@@ -436,4 +473,61 @@ int	opposite_price(t_list *ptr_a, t_list *target)
 	else
 		price = size_a - ptr_a->current_position + target->current_position;
 	return (price);
+}
+
+t_list	*find_max(t_list *stack)
+{
+	while (stack)
+	{
+		if (stack->max == 1)
+			return (stack);
+		stack = stack->next;
+	}
+	return (stack);
+}
+
+t_list	*find_min(t_list *stack)
+{
+	while (stack)
+	{
+		if (stack->min == 1)
+			return (stack);
+		stack = stack->next;
+	}
+	return (stack);
+}
+
+void	assign_target_b(t_list *stack_a, t_list *stack_b)
+{
+	t_list *ptr_a;
+	t_list *ptr_b;
+	int		diff;
+	int		smallest_diff;
+	int		tempnum;
+
+
+	tempnum = stack_b->number;
+	if (tempnum == 7)
+		printf("found bitch number\n");
+	ptr_b = stack_b;
+	while (ptr_b)
+	{
+		ptr_a = stack_a;
+		smallest_diff = INT_MAX;
+		ptr_b->target = NULL;
+		while (ptr_a)
+		{
+			if (ptr_a->number > ptr_b->number)
+			{
+				diff = ptr_a->number - ptr_b->number;
+				if (diff < smallest_diff)
+				{
+					smallest_diff = diff;
+					ptr_b->target = ptr_a;
+				}
+			}
+			ptr_a = ptr_a->next;
+		}
+		ptr_b = ptr_b->next;
+	}
 }

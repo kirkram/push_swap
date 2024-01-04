@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 13:13:25 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/04 13:06:08 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/04 16:34:54 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,13 @@ int	is_sorted(t_list *stack_a)
 	return (1);
 }
 
-int	is_sorted_reverse(t_list *stack_a)
+int	is_sorted_reverse(t_list *stack_b)
 {
 	t_list	*ptr;
 
-	ptr = stack_a;
+	if (!stack_b)
+		return (1);
+	ptr = stack_b;
 	while (ptr->next)
 	{
 		if (ptr->number < ptr->next->number)
