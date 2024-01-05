@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 11:37:39 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/05 16:42:59 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/05 17:51:19 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include "libft/libft.h"
 #include <string.h>
+#include <unistd.h>
 
 t_list		*create_stack_a(int ac, char **av);
 void		p_swap(t_list **stack_a, t_list **stack_b);
@@ -45,7 +46,10 @@ int	main(int ac, char **av)
 	{
 		stack_a = create_stack_a(ac, av);
 		if (!stack_a)
-			return (ft_printf("Error\n"));
+		{
+			write(STDERR_FILENO, "Error\n", 7);
+			return (0);
+		}
 		if (!is_sorted(stack_a))
 		{
 			stack_b = NULL;
@@ -68,8 +72,7 @@ int	main(int ac, char **av)
 	else if (ac == 1)
 		return (0);
 	else
-		ft_printf("Error\n");
-
+		write(STDERR_FILENO, "Error\n", 7);
 	ft_lstclear(&stack_a, NULL);
 	return (0);
 }
