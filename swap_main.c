@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 11:37:39 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/05 12:12:02 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/05 16:42:59 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 t_list		*create_stack_a(int ac, char **av);
 void		p_swap(t_list **stack_a, t_list **stack_b);
 int			check_input(int ac, char **av);
-int			check_input_array(int *array, int ac, char **av);
 int			is_sorted(t_list *stack_a);
 void		sort_3(t_list **stack_a);
 void		find_positions_and_minmax(t_list *stack);
@@ -30,7 +29,7 @@ t_list		*find_cheapest(t_list **stack_a);
 int			price_up(t_list *ptr_a, t_list *target);
 int			price_down(t_list *ptr_a, t_list *target);
 int			opposite_price(t_list *ptr_a, t_list *target);
-void		print_current_stack(t_list *stack_a,t_list *stack_b);
+void		print_current_stack(t_list *stack_a, t_list *stack_b);
 t_list		*find_max(t_list *stack);
 void		p_swap_2(t_list **stack_a, t_list **stack_b);
 void		assign_target_b(t_list *stack_a, t_list *stack_b);
@@ -46,9 +45,7 @@ int	main(int ac, char **av)
 	{
 		stack_a = create_stack_a(ac, av);
 		if (!stack_a)
-		{
 			return (ft_printf("Error\n"));
-		}
 		if (!is_sorted(stack_a))
 		{
 			stack_b = NULL;
@@ -69,11 +66,10 @@ int	main(int ac, char **av)
 		// 	ft_printf("Not sorted!\n");
 	}
 	else if (ac == 1)
-	{
 		return (0);
-	}
 	else
 		ft_printf("Error\n");
+
 	ft_lstclear(&stack_a, NULL);
 	return (0);
 }
@@ -161,22 +157,19 @@ void	p_swap(t_list **stack_a, t_list **stack_b)
 	}
 	ptr = find_max(*stack_b);
 	if (ptr->above_m)
-		while((*stack_b)->max != 1)
+		while ((*stack_b)->max != 1)
 			rb(stack_b);
 	else if (!ptr->above_m)
-		while((*stack_b)->max != 1)
+		while ((*stack_b)->max != 1)
 			rrb(stack_b);
 	if ((*stack_a)->array_size == 3)
-	{
-		//ft_printf("\n...sort 3 after pushing...\n");
 		sort_3(stack_a);
-	}
-	//print_current_stack(*stack_a, *stack_b);
 }
 
 void	p_swap_2(t_list **stack_a, t_list **stack_b)
 {
 	t_list *min_n;
+
 	while (*stack_b)
 	{
 		assign_target_b(*stack_a, *stack_b);
@@ -194,7 +187,6 @@ void	p_swap_2(t_list **stack_a, t_list **stack_b)
 					rra(stack_a);
 			pa(stack_a, stack_b);
 		}
-		//print_current_stack(*stack_a, *stack_b);
 	}
 	find_positions_and_minmax(*stack_a);
 	min_n = find_min(*stack_a);
@@ -208,15 +200,13 @@ void	p_swap_2(t_list **stack_a, t_list **stack_b)
 
 void	print_current_stack(t_list *stack_a,t_list *stack_b)
 {
-	t_list *ptr_a;
-	t_list *ptr_b;
+	t_list	*ptr_a;
+	t_list	*ptr_b;
 
 	ft_printf("Stack A\t\tStack B\n");
 	ft_printf("-------\t\t-------\n");
-
 	ptr_a = stack_a;
 	ptr_b = stack_b;
-
 	while (ptr_a != NULL || ptr_b != NULL)
 	{
 		if (ptr_a != NULL)
@@ -259,8 +249,8 @@ void	sort_3(t_list **stack_a)
 		sa(stack_a);
 	else if ((*stack_a)->min == 0 && (*stack_a)->next->max == 1)
 		rra(stack_a);
-	else
-		ft_printf("There is an error in sort_3\n");
+	//else
+	//	ft_printf("There is an error in sort_3\n");
 	find_positions_and_minmax((*stack_a));
 }
 
@@ -275,8 +265,6 @@ void	price_a(t_list *stack_a, t_list *stack_b)
 	find_positions_and_minmax(stack_a);
 	find_positions_and_minmax(stack_b);
 	assign_target_a(stack_a, stack_b);
-	// if (stack_a->target)
-	// 	printf("the target for the first A node is %d", stack_a->target->number);
 	while (ptr_a)
 	{
 		target_node = ptr_a->target;
@@ -300,7 +288,7 @@ void	find_positions_and_minmax(t_list *stack)
 	int		i;
 
 	ptr = stack;
-	i = 0; // careful with that 0 when calculating
+	i = 0;
 	while (ptr)
 	{
 		ptr->current_position = i;
@@ -320,7 +308,6 @@ void	find_positions_and_minmax(t_list *stack)
 		ptr = ptr->next;
 	}
 	find_min_max(stack);
-	//find_price(stack);
 }
 
 void	find_min_max(t_list *stack)
@@ -386,25 +373,45 @@ void	push_cheapest(t_list **stack_a, t_list **stack_b)
 	t_list *cheapest;
 	t_list *min_n;
 
+
 	cheapest = find_cheapest(stack_a);
 	if (!cheapest->target)
 	{
-		if (cheapest->above_m)
+		min_n = find_min(*stack_b);
+
+		if (cheapest->above_m && min_n->above_m)
+		{
+			while (*stack_a != cheapest && min_n->next)
+				rr(stack_a, stack_b);
 			while (*stack_a != cheapest)
 				ra(stack_a);
-		else
+			while (min_n->next)
+				rb(stack_b);
+		}
+		else if (!cheapest->above_m && !min_n->above_m)
+		{
+			while (*stack_a != cheapest && min_n->next)
+				rrr(stack_a, stack_b);
 			while (*stack_a != cheapest)
 				rra(stack_a);
-		// potentialy increases the amoint of moves?
-		min_n = *stack_b;
-		while (min_n->min != 1)
-			min_n = min_n->next;
-		if (min_n->above_m)
-			while (min_n->next != NULL)
-				rb(stack_b);
-		else if (!min_n->above_m)
-			while (min_n->next != NULL)
+			while (min_n->next)
 				rrb(stack_b);
+		}
+		else
+		{
+			if (cheapest->above_m)
+				while (*stack_a != cheapest)
+					ra(stack_a);
+			else if (!cheapest->above_m)
+				while (*stack_a != cheapest)
+					rra(stack_a);
+			if (min_n->above_m)
+				while (min_n->next)
+					rb(stack_b);
+			else if (!min_n->above_m)
+				while (min_n->next)
+					rrb(stack_b);
+		}
 	}
 	else if (cheapest->above_m && cheapest->target->above_m)
 	{
@@ -416,8 +423,8 @@ void	push_cheapest(t_list **stack_a, t_list **stack_b)
 				ra(stack_a);
 			else if (*stack_b != cheapest->target)
 				rb(stack_b);
-			else
-				ft_printf("Mistake in the push stack 1\n");
+			//else
+			//	ft_printf("Mistake in the push_cheapest 1\n");
 		}
 	}
 	else if (!(cheapest)->above_m && !(cheapest)->target->above_m)
@@ -430,8 +437,8 @@ void	push_cheapest(t_list **stack_a, t_list **stack_b)
 				rra(stack_a);
 			else if (*stack_b != cheapest->target)
 				rrb(stack_b);
-			else
-				ft_printf("Mistake in the push stack 2\n");
+			//else
+			//	ft_printf("Mistake in the push_cheapest 2\n");
 		}
 	}
 	else if (cheapest->above_m != cheapest->target->above_m)
@@ -450,11 +457,11 @@ void	push_cheapest(t_list **stack_a, t_list **stack_b)
 			while (*stack_b != cheapest->target)
 				rb(stack_b);
 		}
-		else
-			ft_printf("Mistake in the push stack 3\n");
+		//else
+		//	ft_printf("Mistake in the push_cheapest 3\n");
 	}
-	else
-		ft_printf("Mistake in the push stack 4\n");
+	//else
+	//	ft_printf("Mistake in the push_cheapest 4\n");
 	pb(stack_a, stack_b);
 	if (!cheapest->target)
 		rb(stack_b);
@@ -511,27 +518,6 @@ int	opposite_price(t_list *ptr_a, t_list *target)
 	return (price);
 }
 
-t_list	*find_max(t_list *stack)
-{
-	while (stack)
-	{
-		if (stack->max == 1)
-			return (stack);
-		stack = stack->next;
-	}
-	return (stack);
-}
-
-t_list	*find_min(t_list *stack)
-{
-	while (stack)
-	{
-		if (stack->min == 1)
-			return (stack);
-		stack = stack->next;
-	}
-	return (stack);
-}
 
 void	assign_target_b(t_list *stack_a, t_list *stack_b)
 {

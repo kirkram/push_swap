@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 13:13:25 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/05 13:19:34 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/05 16:40:33 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	check_input(int ac, char **av)
 		j = 0;
 		while (av[i][j])
 		{
-			if (!check_input_character(av, array, i, j))
+			if (!check_input_character(av, &array, i, j))
 				return (0);
 			j++;
 		}
@@ -70,7 +70,7 @@ int	check_input(int ac, char **av)
 	return (1);
 }
 
-int	check_input_character(char **av, int *array, int i, int j)
+int	check_input_character(char **av, int **array, int i, int j)
 {
 	if (av[i][j] == '-')
 	{
