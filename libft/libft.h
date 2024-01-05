@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 12:31:10 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/04 17:08:16 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/05 13:19:20 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,5 +91,7 @@ int			check_input(int ac, char **av);
 int			check_input_array(int *array, int ac, char **av);
 int			is_sorted(t_list *stack_a);
 int			is_sorted_reverse(t_list *stack_a); //helper, delete
+int			free_n_0(int *array);
+int			check_input_character(char **av, int *array, int i, int j);
 
 #endif

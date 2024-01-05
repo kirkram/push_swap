@@ -1,11 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   swap_main.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/05 11:37:39 by klukiano          #+#    #+#             */
+/*   Updated: 2024/01/05 12:12:02 by klukiano         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "libft/libft.h"
 #include <string.h>
 
-t_list		*create_stack_a(int ac, char **av, t_list **save_params);
-t_list		*create_stack_b(t_list *save_params);
-void		p_swap(t_list **stack_a, t_list **stack_b, t_list *save_params);
+t_list		*create_stack_a(int ac, char **av);
+void		p_swap(t_list **stack_a, t_list **stack_b);
 int			check_input(int ac, char **av);
 int			check_input_array(int *array, int ac, char **av);
 int			is_sorted(t_list *stack_a);
@@ -29,44 +40,47 @@ void		sort_4(t_list **stack_a, t_list **stack_b);
 int	main(int ac, char **av)
 {
 	t_list	*stack_a;
-	t_list	*save_params;
 	t_list	*stack_b;
 
-	save_params = ft_lstnew(NULL); //dont forget to free
 	if (check_input(ac, av) && ac > 1)
 	{
-		stack_a = create_stack_a(ac, av, &save_params);
+		stack_a = create_stack_a(ac, av);
 		if (!stack_a)
-			return(ft_printf("Error\n"));
-		stack_b = NULL;
-		if (save_params->array_size == 3)
-			sort_3(&stack_a);
-		else if (save_params->array_size == 4)
-			sort_4(&stack_a, &stack_b);
-		else
-			p_swap(&stack_a, &stack_b, save_params);
-		//print_current_stack(stack_a, stack_b);
-		p_swap_2(&stack_a, &stack_b);
-		//print_current_stack(stack_a, stack_b);
-		// if (is_sorted(stack_a) && is_sorted_reverse(stack_b))
-		// 	ft_printf("sorted properly!\n\n");
+		{
+			return (ft_printf("Error\n"));
+		}
+		if (!is_sorted(stack_a))
+		{
+			stack_b = NULL;
+			if (stack_a->array_size == 3)
+				sort_3(&stack_a);
+			else if (stack_a->array_size == 4)
+				sort_4(&stack_a, &stack_b);
+			else
+				p_swap(&stack_a, &stack_b);
+			p_swap_2(&stack_a, &stack_b);
+		}
+		// if (is_sorted(stack_a))
+		// {
+		// 	ft_printf("Sorted!\n");
+		// 	print_current_stack(stack_a, stack_b);
+		// }
 		// else
-		// 	ft_printf("There is a mistake\n\n");
+		// 	ft_printf("Not sorted!\n");
 	}
 	else if (ac == 1)
 	{
-		free(save_params);
 		return (0);
 	}
 	else
 		ft_printf("Error\n");
-	free(save_params);
+	ft_lstclear(&stack_a, NULL);
 	return (0);
 }
 
 void	sort_4(t_list **stack_a, t_list **stack_b)
 {
-	t_list *ptr_min;
+	t_list	*ptr_min;
 
 	find_positions_and_minmax(*stack_a);
 	ptr_min = find_min(*stack_a);
@@ -81,17 +95,14 @@ void	sort_4(t_list **stack_a, t_list **stack_b)
 		rra(stack_a);
 	pb(stack_a, stack_b);
 	sort_3(stack_a);
-	//assign_target_b(stack_a, stack_b);
-
 }
 
-t_list	*create_stack_a(int ac, char **av, t_list **save_params)
+t_list	*create_stack_a(int ac, char **av)
 {
 	t_list	*stack_a_head;
 	t_list	*list_ptr;
 	char	**str_array;
 	int		i;
-	//int		sign;
 
 	i = 0;
 	stack_a_head = ft_lstnew(NULL);
@@ -101,16 +112,16 @@ t_list	*create_stack_a(int ac, char **av, t_list **save_params)
 		str_array = ft_split(av[1], ' ');
 		while (str_array[i])
 			i ++;
-		(*save_params)->array_size = i;
+		stack_a_head->array_size = i;
 		i = 0;
-		while (i < (*save_params)->array_size)
+		while (i < stack_a_head->array_size)
 		{
 			list_ptr->number = ft_atoi(str_array[i]);
 			if (str_array[i][0] != '-' && list_ptr->number == -1)
 				return (0);
 			else if (str_array[i][0] == '-' && list_ptr->number == 0)
 				return (0);
-			if (i < (*save_params)->array_size - 1) // i hate this condition need to fix
+			if (i < stack_a_head->array_size - 1)
 			{
 				ft_lstadd_back(&list_ptr, ft_lstnew(NULL));
 				list_ptr = list_ptr->next;
@@ -123,22 +134,20 @@ t_list	*create_stack_a(int ac, char **av, t_list **save_params)
 		while (++i < ac)
 		{
 			list_ptr->number = ft_atoi(av[i]);
-			if (i < ac - 1) // i hate this condition need to fix
+			if (i < ac - 1)
 			{
 				ft_lstadd_back(&list_ptr, ft_lstnew(NULL));
 				list_ptr = list_ptr->next;
 			}
 		}
-		(*save_params)->array_size = i - 1;
+		stack_a_head->array_size = i - 1;
 	}
 	return (stack_a_head);
 }
 
-void	p_swap(t_list **stack_a, t_list **stack_b, t_list *save_params)
+void	p_swap(t_list **stack_a, t_list **stack_b)
 {
 	t_list	*ptr;
-
-	(*stack_a)->array_size = save_params->array_size;
 
 	pb(stack_a, stack_b);
 	pb(stack_a, stack_b);
@@ -202,8 +211,8 @@ void	print_current_stack(t_list *stack_a,t_list *stack_b)
 	t_list *ptr_a;
 	t_list *ptr_b;
 
-	printf("Stack A\t\tStack B\n");
-	printf("-------\t\t-------\n");
+	ft_printf("Stack A\t\tStack B\n");
+	ft_printf("-------\t\t-------\n");
 
 	ptr_a = stack_a;
 	ptr_b = stack_b;
@@ -212,20 +221,20 @@ void	print_current_stack(t_list *stack_a,t_list *stack_b)
 	{
 		if (ptr_a != NULL)
 		{
-			printf("%d\t\t", ptr_a->number);
+			ft_printf("%d\t\t", ptr_a->number);
 			ptr_a = ptr_a->next;
 		}
 		else
-			printf(" \t\t");
+			ft_printf(" \t\t");
 		if (ptr_b != NULL)
 		{
-			printf("%d\n", ptr_b->number);
+			ft_printf("%d\n", ptr_b->number);
 			ptr_b = ptr_b->next;
 		}
 		else
-			printf("\n");
+			ft_printf("\n");
 	}
-	printf("\n");
+	ft_printf("\n");
 }
 
 
@@ -251,7 +260,7 @@ void	sort_3(t_list **stack_a)
 	else if ((*stack_a)->min == 0 && (*stack_a)->next->max == 1)
 		rra(stack_a);
 	else
-		printf("There is an error in sort_3\n");
+		ft_printf("There is an error in sort_3\n");
 	find_positions_and_minmax((*stack_a));
 }
 
@@ -377,8 +386,6 @@ void	push_cheapest(t_list **stack_a, t_list **stack_b)
 	t_list *cheapest;
 	t_list *min_n;
 
-	int	tempnumcheapest;
-
 	cheapest = find_cheapest(stack_a);
 	if (!cheapest->target)
 	{
@@ -410,7 +417,7 @@ void	push_cheapest(t_list **stack_a, t_list **stack_b)
 			else if (*stack_b != cheapest->target)
 				rb(stack_b);
 			else
-				printf("Mistake in the push stack 1\n");
+				ft_printf("Mistake in the push stack 1\n");
 		}
 	}
 	else if (!(cheapest)->above_m && !(cheapest)->target->above_m)
@@ -424,7 +431,7 @@ void	push_cheapest(t_list **stack_a, t_list **stack_b)
 			else if (*stack_b != cheapest->target)
 				rrb(stack_b);
 			else
-				printf("Mistake in the push stack 2\n");
+				ft_printf("Mistake in the push stack 2\n");
 		}
 	}
 	else if (cheapest->above_m != cheapest->target->above_m)
@@ -444,10 +451,10 @@ void	push_cheapest(t_list **stack_a, t_list **stack_b)
 				rb(stack_b);
 		}
 		else
-			printf("Mistake in the push stack 3\n");
+			ft_printf("Mistake in the push stack 3\n");
 	}
 	else
-		printf("Mistake in the push stack 4\n");
+		ft_printf("Mistake in the push stack 4\n");
 	pb(stack_a, stack_b);
 	if (!cheapest->target)
 		rb(stack_b);
