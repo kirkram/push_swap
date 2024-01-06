@@ -6,17 +6,25 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 13:05:18 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/05 16:40:34 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/06 13:47:49 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "libft/libft.h"
 
-int	free_n_0(int **array)
+int	free_n_0(int **int_array, char **str_array)
 {
-	if (*array)
-		free (*array);
+	if (int_array && *int_array)
+		free (*int_array);
+	if (str_array)
+	{
+		while (*str_array)
+		{
+			free (*str_array);
+			str_array ++;
+		}
+	}
 	return (0);
 }
 

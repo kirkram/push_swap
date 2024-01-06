@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 11:37:39 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/05 17:51:19 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/06 15:24:56 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,19 @@ void		sort_4(t_list **stack_a, t_list **stack_b);
 
 int	main(int ac, char **av)
 {
+
+	//NEED TO WORK CASE WHEN 3 ARGS ARE LIKE THiS
+	// "123 1 2" "654 456 123"
+	// must be ERROR
 	t_list	*stack_a;
 	t_list	*stack_b;
 
-	if (check_input(ac, av) && ac > 1)
+	if (ac > 1 && check_input(ac, av))
 	{
 		stack_a = create_stack_a(ac, av);
 		if (!stack_a)
 		{
-			write(STDERR_FILENO, "Error\n", 7);
+			ft_putstr_fd("Error\n", 2);
 			return (0);
 		}
 		if (!is_sorted(stack_a))
@@ -72,7 +76,7 @@ int	main(int ac, char **av)
 	else if (ac == 1)
 		return (0);
 	else
-		write(STDERR_FILENO, "Error\n", 7);
+		ft_putstr_fd("Error\n", 2);
 	ft_lstclear(&stack_a, NULL);
 	return (0);
 }
@@ -127,6 +131,8 @@ t_list	*create_stack_a(int ac, char **av)
 			}
 			i ++;
 		}
+		// attention to this free. does it free all of it ?
+		free_n_0(NULL, str_array);
 	}
 	else
 	{
@@ -252,8 +258,6 @@ void	sort_3(t_list **stack_a)
 		sa(stack_a);
 	else if ((*stack_a)->min == 0 && (*stack_a)->next->max == 1)
 		rra(stack_a);
-	//else
-	//	ft_printf("There is an error in sort_3\n");
 	find_positions_and_minmax((*stack_a));
 }
 
@@ -343,10 +347,10 @@ void	find_min_max(t_list *stack)
 
 void	assign_target_a(t_list *stack_a, t_list *stack_b)
 {
-	t_list *ptr_a;
-	t_list *ptr_b;
-	int		diff;
-	int		smallest_diff;
+	t_list	*ptr_a;
+	t_list	*ptr_b;
+	long	diff;
+	long	smallest_diff;
 
 	ptr_a = stack_a;
 	while (ptr_a)
@@ -358,7 +362,7 @@ void	assign_target_a(t_list *stack_a, t_list *stack_b)
 		{
 			if (ptr_b->number < ptr_a->number)
 			{
-				diff = ptr_a->number - ptr_b->number;
+				diff = (long)ptr_a->number - (long)ptr_b->number;
 				if (diff < smallest_diff)
 				{
 					smallest_diff = diff;
@@ -426,8 +430,6 @@ void	push_cheapest(t_list **stack_a, t_list **stack_b)
 				ra(stack_a);
 			else if (*stack_b != cheapest->target)
 				rb(stack_b);
-			//else
-			//	ft_printf("Mistake in the push_cheapest 1\n");
 		}
 	}
 	else if (!(cheapest)->above_m && !(cheapest)->target->above_m)
@@ -440,8 +442,7 @@ void	push_cheapest(t_list **stack_a, t_list **stack_b)
 				rra(stack_a);
 			else if (*stack_b != cheapest->target)
 				rrb(stack_b);
-			//else
-			//	ft_printf("Mistake in the push_cheapest 2\n");
+
 		}
 	}
 	else if (cheapest->above_m != cheapest->target->above_m)
@@ -460,11 +461,7 @@ void	push_cheapest(t_list **stack_a, t_list **stack_b)
 			while (*stack_b != cheapest->target)
 				rb(stack_b);
 		}
-		//else
-		//	ft_printf("Mistake in the push_cheapest 3\n");
 	}
-	//else
-	//	ft_printf("Mistake in the push_cheapest 4\n");
 	pb(stack_a, stack_b);
 	if (!cheapest->target)
 		rb(stack_b);
@@ -521,13 +518,12 @@ int	opposite_price(t_list *ptr_a, t_list *target)
 	return (price);
 }
 
-
 void	assign_target_b(t_list *stack_a, t_list *stack_b)
 {
-	t_list *ptr_a;
-	t_list *ptr_b;
-	int		diff;
-	int		smallest_diff;
+	t_list	*ptr_a;
+	t_list	*ptr_b;
+	long	diff;
+	long	smallest_diff;
 
 	ptr_b = stack_b;
 	while (ptr_b)
@@ -539,7 +535,7 @@ void	assign_target_b(t_list *stack_a, t_list *stack_b)
 		{
 			if (ptr_a->number > ptr_b->number)
 			{
-				diff = ptr_a->number - ptr_b->number;
+				diff = (long)ptr_a->number - (long)ptr_b->number;
 				if (diff < smallest_diff)
 				{
 					smallest_diff = diff;
