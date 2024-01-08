@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano@student.hive.fi <klukiano>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 15:04:05 by klukiano@st       #+#    #+#             */
-/*   Updated: 2023/11/06 21:48:15 by klukiano@st      ###   ########.fr       */
+/*   Updated: 2024/01/08 12:19:40 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,5 +100,6 @@ static char	**free_reverse(int i, char **array)
 		free (array[i]);
 		i --;
 	}
+	free (array);
 	return (NULL);
 }
