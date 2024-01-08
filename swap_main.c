@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 11:37:39 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/06 15:24:56 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/08 19:01:15 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,24 +39,17 @@ void		sort_4(t_list **stack_a, t_list **stack_b);
 
 int	main(int ac, char **av)
 {
-
-	//NEED TO WORK CASE WHEN 3 ARGS ARE LIKE THiS
-	// "123 1 2" "654 456 123"
-	// must be ERROR
 	t_list	*stack_a;
 	t_list	*stack_b;
 
+	stack_b = NULL;
 	if (ac > 1 && check_input(ac, av))
 	{
 		stack_a = create_stack_a(ac, av);
 		if (!stack_a)
-		{
 			ft_putstr_fd("Error\n", 2);
-			return (0);
-		}
-		if (!is_sorted(stack_a))
+		else if (!is_sorted(stack_a))
 		{
-			stack_b = NULL;
 			if (stack_a->array_size == 3)
 				sort_3(&stack_a);
 			else if (stack_a->array_size == 4)
@@ -65,18 +58,12 @@ int	main(int ac, char **av)
 				p_swap(&stack_a, &stack_b);
 			p_swap_2(&stack_a, &stack_b);
 		}
-		// if (is_sorted(stack_a))
-		// {
-		// 	ft_printf("Sorted!\n");
-		// 	print_current_stack(stack_a, stack_b);
-		// }
-		// else
-		// 	ft_printf("Not sorted!\n");
 	}
 	else if (ac == 1)
 		return (0);
 	else
 		ft_putstr_fd("Error\n", 2);
+	//print_current_stack(stack_a, stack_b);
 	ft_lstclear(&stack_a, NULL);
 	return (0);
 }
@@ -120,18 +107,13 @@ t_list	*create_stack_a(int ac, char **av)
 		while (i < stack_a_head->array_size)
 		{
 			list_ptr->number = ft_atoi(str_array[i]);
-			if (str_array[i][0] != '-' && list_ptr->number == -1)
-				return (0);
-			else if (str_array[i][0] == '-' && list_ptr->number == 0)
-				return (0);
 			if (i < stack_a_head->array_size - 1)
 			{
-				ft_lstadd_back(&list_ptr, ft_lstnew(NULL));
+				list_ptr->next = ft_lstnew(NULL);
 				list_ptr = list_ptr->next;
 			}
 			i ++;
 		}
-		// attention to this free. does it free all of it ?
 		free_n_0(NULL, str_array);
 	}
 	else
@@ -141,7 +123,7 @@ t_list	*create_stack_a(int ac, char **av)
 			list_ptr->number = ft_atoi(av[i]);
 			if (i < ac - 1)
 			{
-				ft_lstadd_back(&list_ptr, ft_lstnew(NULL));
+				list_ptr->next = ft_lstnew(NULL);
 				list_ptr = list_ptr->next;
 			}
 		}
@@ -153,7 +135,8 @@ t_list	*create_stack_a(int ac, char **av)
 void	p_swap(t_list **stack_a, t_list **stack_b)
 {
 	t_list	*ptr;
-
+	if ((*stack_a)->array_size == 2)
+		return ;
 	pb(stack_a, stack_b);
 	pb(stack_a, stack_b);
 	if ((*stack_b)->number < (*stack_b)->next->number)
@@ -236,7 +219,6 @@ void	print_current_stack(t_list *stack_a,t_list *stack_b)
 	ft_printf("\n");
 }
 
-
 void	sort_3(t_list **stack_a)
 {
 	find_positions_and_minmax(*stack_a);
@@ -278,13 +260,22 @@ void	price_a(t_list *stack_a, t_list *stack_b)
 		s_price_up = price_up(ptr_a, target_node);
 		s_price_down = price_down(ptr_a, target_node);
 		ptr_a->price = s_price_up + 1;
+		ptr_a->direction = 1;
 		if (s_price_down < s_price_up)
+		{
 			ptr_a->price = s_price_down + 1;
+			ptr_a->direction = -1;
+		}
 		if (!target_node)
 			ptr_a->price += 1;
 		if (target_node && ptr_a->above_m != target_node->above_m)
+		{
 			if ((opposite_price(ptr_a, target_node) + 1) < ptr_a->price)
+			{
 				ptr_a->price = opposite_price(ptr_a, target_node) + 1;
+				ptr_a->direction = 0;
+			}
+		}
 		ptr_a = ptr_a->next;
 	}
 }
@@ -356,7 +347,7 @@ void	assign_target_a(t_list *stack_a, t_list *stack_b)
 	while (ptr_a)
 	{
 		ptr_b = stack_b;
-		smallest_diff = INT_MAX;
+		smallest_diff = LONG_MAX;
 		ptr_a->target = NULL;
 		while (ptr_b)
 		{
@@ -382,10 +373,16 @@ void	push_cheapest(t_list **stack_a, t_list **stack_b)
 
 
 	cheapest = find_cheapest(stack_a);
+	// if (cheapest->number == 0)
+	// {
+	// 	print_current_stack(*stack_a, *stack_b);
+	// 	printf("gotcha bitch\n");
+	// }
+
+	// print_current_stack(*stack_a, *stack_b);
 	if (!cheapest->target)
 	{
 		min_n = find_min(*stack_b);
-
 		if (cheapest->above_m && min_n->above_m)
 		{
 			while (*stack_a != cheapest && min_n->next)
@@ -442,25 +439,60 @@ void	push_cheapest(t_list **stack_a, t_list **stack_b)
 				rra(stack_a);
 			else if (*stack_b != cheapest->target)
 				rrb(stack_b);
-
 		}
 	}
 	else if (cheapest->above_m != cheapest->target->above_m)
 	{
-		if (cheapest->above_m)
+		//printf("When different direcetions CASE\n");
+		//if ((opposite_price(cheapest, cheapest->target) + 1) == cheapest->price)
+		if (cheapest->direction == 0)
 		{
-			while (*stack_a != cheapest)
-				ra(stack_a);
-			while (*stack_b != cheapest->target)
-				rrb(stack_b);
+			if (cheapest->above_m)
+			{
+				while (*stack_a != cheapest)
+					ra(stack_a);
+				while (*stack_b != cheapest->target)
+					rrb(stack_b);
+			}
+			else if (!(cheapest)->above_m)
+			{
+				while (*stack_a != cheapest)
+					rra(stack_a);
+				while (*stack_b != cheapest->target)
+					rb(stack_b);
+			}
 		}
-		else if (!(cheapest)->above_m)
+		else if (cheapest->direction == 1)
 		{
-			while (*stack_a != cheapest)
-				rra(stack_a);
-			while (*stack_b != cheapest->target)
-				rb(stack_b);
+			//printf ("A VERY SPECIAL CASE!\n");
+			// can I do recursive  by changing the above_m value?
+			while (*stack_a != cheapest || *stack_b != cheapest->target)
+			{
+				if (*stack_a != cheapest && *stack_b != cheapest->target)
+					rr(stack_a, stack_b);
+				else if (*stack_a != cheapest)
+					ra(stack_a);
+				else if (*stack_b != cheapest->target)
+					rb(stack_b);
+			}
 		}
+		else if (cheapest->direction == -1)
+		{
+			// can I do recursive  by changing the above_m value?
+			// like cheapest->above_m = 1 target = 1
+			// return (push_cheapest(sta_a, sta_b))
+			while (*stack_a != cheapest || *stack_b != cheapest->target)
+			{
+				if (*stack_a != cheapest && *stack_b != cheapest->target)
+					rrr(stack_a, stack_b);
+				else if (*stack_a != cheapest)
+					rra(stack_a);
+				else if (*stack_b != cheapest->target)
+					rrb(stack_b);
+			}
+		}
+		else
+			printf("ERRROR EROOR ERROR\n");
 	}
 	pb(stack_a, stack_b);
 	if (!cheapest->target)
@@ -478,6 +510,11 @@ t_list	*find_cheapest(t_list **stack_a)
 	{
 		if (ptr_a->price < cheapest->price)
 			cheapest = ptr_a;
+		// if (ptr_a->max && cheapest->price > ptr_a->price)
+		// {
+		// 	cheapest = ptr_a;
+		// 	return (cheapest);
+		// } 5186 average without,
 		ptr_a = ptr_a->next;
 	}
 	return (cheapest);
@@ -529,7 +566,7 @@ void	assign_target_b(t_list *stack_a, t_list *stack_b)
 	while (ptr_b)
 	{
 		ptr_a = stack_a;
-		smallest_diff = INT_MAX;
+		smallest_diff = LONG_MAX;
 		ptr_b->target = NULL;
 		while (ptr_a)
 		{

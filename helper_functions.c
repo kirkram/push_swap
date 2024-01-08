@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 13:05:18 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/06 13:47:49 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/08 12:23:20 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,19 @@
 
 int	free_n_0(int **int_array, char **str_array)
 {
+	int i;
+
+	i = 0;
 	if (int_array && *int_array)
 		free (*int_array);
 	if (str_array)
 	{
-		while (*str_array)
+		while (str_array[i])
 		{
-			free (*str_array);
-			str_array ++;
+			free (str_array[i]);
+			i ++;
 		}
+		free (str_array);
 	}
 	return (0);
 }

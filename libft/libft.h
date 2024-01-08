@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 12:31:10 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/06 14:43:29 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/08 15:20:54 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ typedef struct s_list
 	int				max;
 	int				min;
 	int				price;
+	int				direction;
 	void			*content;
 	struct s_list	*next;
-	struct s_list	*previous;
 	struct s_list	*target;
 }					t_list;
 
@@ -89,7 +89,7 @@ void	rrr(t_list **stack_a, t_list **stack_b);
 
 int			check_input(int ac, char **av);
 int			check_input_array(int *array, int ac, char **av);
-int			check_input_character(char **av, int i, int j);
+int			check_input_character(char **av, int ac, int i, int j);
 int			is_sorted(t_list *stack_a);
 int			is_sorted_reverse(t_list *stack_a); //helper, delete
 int			free_n_0(int **array, char **str_array);

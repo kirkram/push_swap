@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 13:13:25 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/06 14:43:46 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/08 16:42:59 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ int	check_input(int ac, char **av)
 	i = 0;
 	if (ac == 2)
 	{
+		if (av[1][0] == '\0')
+			return (0);
 		str_array = ft_split(av[1], ' ');
 		while (str_array[i])
 			i++;
@@ -65,7 +67,7 @@ int	check_input(int ac, char **av)
 			j = 0;
 			while (str_array[i][j])
 			{
-				if (!check_input_character(str_array, i, j))
+				if (!check_input_character(str_array, ac, i, j))
 					return (free_n_0(&int_array, str_array));
 				j++;
 			}
@@ -80,27 +82,36 @@ int	check_input(int ac, char **av)
 		int_array = malloc((ac - 1) * sizeof(int));
 		if (!int_array)
 			return (0);
+		str_array = malloc((ac) * sizeof(char *));
+		while (i < ac - 1)
+		{
+			str_array[i] = ft_substr(av[i + 1], 0, -1);
+			i ++;
+		}
+		str_array[i] = NULL;
+		i = 0;
 		while (++i < ac)
 		{
 			j = 0;
 			while (av[i][j])
 			{
-				if (!check_input_character(av, i, j))
-					return (free_n_0(&int_array, NULL));
+				if (!check_input_character(av, ac, i, j))
+					return (free_n_0(&int_array, str_array));
 				j++;
 			}
 			int_array[i - 1] = ft_atoi(av[i]);
 		}
 		//crucial change check if it works with that
-		if (!check_input_array(int_array, ac - 1, av++))
-			return (free_n_0(&int_array, NULL));
+		if (!check_input_array(int_array, ac - 1, str_array))
+			return (free_n_0(&int_array, str_array));
 	}
-	free (int_array);
-	return (1);
+	return (free_n_0(&int_array, str_array) + 1);
 }
 
-int	check_input_character(char **av, int i, int j)
+int	check_input_character(char **av, int ac, int i, int j)
 {
+	if (ac > 2 && !ft_isdigit(av[i][j]) && av[i][j] != '-')
+		return (0);
 	if (av[i][j] == '-')
 	{
 		if (!ft_isdigit(av[i][j + 1]) || av[i][j + 1] == 0)
@@ -141,3 +152,4 @@ int	check_input_array(int *array, int ac, char **av)
 	}
 	return (1);
 }
+
