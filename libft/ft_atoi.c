@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 14:30:59 by klukiano@st       #+#    #+#             */
-/*   Updated: 2024/01/06 15:17:16 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/08 10:55:16 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	ft_atoi(const char *str)
 		if (num < 0 || num > 2147483647)
 		{
 			if (num == 2147483648 && sign < 0)
-				return (-2147483648);
+				return (num * sign);
 			if (sign > 0)
 				return (-1);
 			return (0);

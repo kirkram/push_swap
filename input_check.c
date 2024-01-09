@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 13:13:25 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/08 16:42:59 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/09 12:38:53 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,31 +51,10 @@ int	check_input(int ac, char **av)
 	char	**str_array;
 
 	i = 0;
+
 	if (ac == 2)
 	{
-		if (av[1][0] == '\0')
-			return (0);
-		str_array = ft_split(av[1], ' ');
-		while (str_array[i])
-			i++;
-		int_array = malloc(i * sizeof(int));
-		if (!int_array)
-			return (free_n_0(NULL, str_array));
-		i = 0;
-		while (str_array[i])
-		{
-			j = 0;
-			while (str_array[i][j])
-			{
-				if (!check_input_character(str_array, ac, i, j))
-					return (free_n_0(&int_array, str_array));
-				j++;
-			}
-			int_array[i] = ft_atoi(str_array[i]);
-			i ++;
-		}
-		if (!check_input_array(int_array, i, str_array))
-			return (free_n_0(&int_array, str_array));
+		return (check_input_two_args(ac, av, str_array, int_array));
 	}
 	else
 	{
@@ -101,11 +80,37 @@ int	check_input(int ac, char **av)
 			}
 			int_array[i - 1] = ft_atoi(av[i]);
 		}
-		//crucial change check if it works with that
 		if (!check_input_array(int_array, ac - 1, str_array))
 			return (free_n_0(&int_array, str_array));
 	}
 	return (free_n_0(&int_array, str_array) + 1);
+}
+
+int	check_input_two_args(int ac, char **av, char **str_array, int *int_array)
+{
+		// if (av[1][0] == '\0')
+		// 	return (0);
+		str_array = ft_split(av[1], ' ');
+		while (str_array[i])
+			i++;
+		int_array = malloc(i * sizeof(int));
+		if (!int_array)
+			return (free_n_0(NULL, str_array));
+		i = 0;
+		while (str_array[i])
+		{
+			j = 0;
+			while (str_array[i][j])
+			{
+				if (!check_input_character(str_array, ac, i, j))
+					return (free_n_0(&int_array, str_array));
+				j++;
+			}
+			int_array[i] = ft_atoi(str_array[i]);
+			i ++;
+		}
+		if (!check_input_array(int_array, i, str_array))
+			return (free_n_0(&int_array, str_array));
 }
 
 int	check_input_character(char **av, int ac, int i, int j)

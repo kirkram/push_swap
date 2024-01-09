@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 12:31:10 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/08 15:20:54 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/09 12:39:38 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,5 +95,6 @@ int			is_sorted_reverse(t_list *stack_a); //helper, delete
 int			free_n_0(int **array, char **str_array);
 t_list		*find_min(t_list *stack);
 t_list		*find_max(t_list *stack);
+int			check_input_two_args(int ac, char **av, char **str_array, int *int_array);
 
 #endif

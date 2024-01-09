@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 11:37:39 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/08 19:01:15 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/09 12:27:20 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ int	main(int ac, char **av)
 		return (0);
 	else
 		ft_putstr_fd("Error\n", 2);
-	//print_current_stack(stack_a, stack_b);
 	ft_lstclear(&stack_a, NULL);
 	return (0);
 }
@@ -259,18 +258,38 @@ void	price_a(t_list *stack_a, t_list *stack_b)
 		target_node = ptr_a->target;
 		s_price_up = price_up(ptr_a, target_node);
 		s_price_down = price_down(ptr_a, target_node);
-		ptr_a->price = s_price_up + 1;
+		ptr_a->price = s_price_up;
 		ptr_a->direction = 1;
 		if (s_price_down < s_price_up)
 		{
-			ptr_a->price = s_price_down + 1;
+			ptr_a->price = s_price_down;
+			// was +1
 			ptr_a->direction = -1;
 		}
 		if (!target_node)
 			ptr_a->price += 1;
+		//wtf i changed it to 2 and it decreased by 700!!!
+		// and the logic was rght before, but i think it now prioritizes the ones without a target less?
+		// tje best result for now was from +1 +1 + 2 and +1 for opp strange, 6 out of 500 cases and bigget is 5555
+		// but... its wrong
+		// i will try price down 0
+		// 0 0 1 1 is 4 out of 500 max move 5588
+		// now opp 0
+		// ok the best result was 0 0 1 0 4/500 and 5538
+		// last test with no target +2;
+		// intresting... 0 0 2 0 is 3/500 but the highest max with 5597
+		// target +3 just for fun...
+		// 3/500 but had a move of 5601. thats too much and already close to messing for the result. need to try rising opposite price with 0 0 1 1
+		// 0 0 1 1 test again --- great result with 3/500 and 5514, running it again
+		// now its 4/500 5580 kinda similar
+		// last try out of 1000 - 0 0 1 0
+		// omg it was 5665 thats too much, same test with  0 0 1 1 was 5129!!!
+		// last try with 1000 tests of 0 0 1 1 and then other worse tester
+		// 7/1000 max move 5544, average 5153 - good enough! now to the worse tester
+		// same, 6 or 7 out of 1000, max 5567 - good!
 		if (target_node && ptr_a->above_m != target_node->above_m)
 		{
-			if ((opposite_price(ptr_a, target_node) + 1) < ptr_a->price)
+			if ((opposite_price(ptr_a, target_node)) + 1 < ptr_a->price)
 			{
 				ptr_a->price = opposite_price(ptr_a, target_node) + 1;
 				ptr_a->direction = 0;
@@ -373,13 +392,6 @@ void	push_cheapest(t_list **stack_a, t_list **stack_b)
 
 
 	cheapest = find_cheapest(stack_a);
-	// if (cheapest->number == 0)
-	// {
-	// 	print_current_stack(*stack_a, *stack_b);
-	// 	printf("gotcha bitch\n");
-	// }
-
-	// print_current_stack(*stack_a, *stack_b);
 	if (!cheapest->target)
 	{
 		min_n = find_min(*stack_b);
@@ -443,8 +455,6 @@ void	push_cheapest(t_list **stack_a, t_list **stack_b)
 	}
 	else if (cheapest->above_m != cheapest->target->above_m)
 	{
-		//printf("When different direcetions CASE\n");
-		//if ((opposite_price(cheapest, cheapest->target) + 1) == cheapest->price)
 		if (cheapest->direction == 0)
 		{
 			if (cheapest->above_m)
@@ -464,8 +474,6 @@ void	push_cheapest(t_list **stack_a, t_list **stack_b)
 		}
 		else if (cheapest->direction == 1)
 		{
-			//printf ("A VERY SPECIAL CASE!\n");
-			// can I do recursive  by changing the above_m value?
 			while (*stack_a != cheapest || *stack_b != cheapest->target)
 			{
 				if (*stack_a != cheapest && *stack_b != cheapest->target)
@@ -478,9 +486,6 @@ void	push_cheapest(t_list **stack_a, t_list **stack_b)
 		}
 		else if (cheapest->direction == -1)
 		{
-			// can I do recursive  by changing the above_m value?
-			// like cheapest->above_m = 1 target = 1
-			// return (push_cheapest(sta_a, sta_b))
 			while (*stack_a != cheapest || *stack_b != cheapest->target)
 			{
 				if (*stack_a != cheapest && *stack_b != cheapest->target)
@@ -491,8 +496,6 @@ void	push_cheapest(t_list **stack_a, t_list **stack_b)
 					rrb(stack_b);
 			}
 		}
-		else
-			printf("ERRROR EROOR ERROR\n");
 	}
 	pb(stack_a, stack_b);
 	if (!cheapest->target)
@@ -510,11 +513,6 @@ t_list	*find_cheapest(t_list **stack_a)
 	{
 		if (ptr_a->price < cheapest->price)
 			cheapest = ptr_a;
-		// if (ptr_a->max && cheapest->price > ptr_a->price)
-		// {
-		// 	cheapest = ptr_a;
-		// 	return (cheapest);
-		// } 5186 average without,
 		ptr_a = ptr_a->next;
 	}
 	return (cheapest);
