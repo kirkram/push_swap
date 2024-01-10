@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stack_operations_2.c                               :+:      :+:    :+:   */
+/*   checker_stack_operations_2.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/09 16:55:01 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/10 15:46:30 by klukiano         ###   ########.fr       */
+/*   Created: 2024/01/10 12:19:33 by klukiano          #+#    #+#             */
+/*   Updated: 2024/01/10 16:40:53 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft/libft.h"
 
-void	rb(t_list **stack_b)
+void	apply_rb(t_list **stack_b)
 {
 	t_list	*temp;
 	t_list	*ptr;
@@ -27,10 +27,9 @@ void	rb(t_list **stack_b)
 		ptr->next = temp;
 		temp->next = NULL;
 	}
-	ft_printf("rb\n");
 }
 
-void	rr(t_list **stack_a, t_list **stack_b)
+void	apply_rr(t_list **stack_a, t_list **stack_b)
 {
 	t_list	*temp;
 	t_list	*ptr;
@@ -55,10 +54,9 @@ void	rr(t_list **stack_a, t_list **stack_b)
 		ptr->next = temp;
 		temp->next = NULL;
 	}
-	ft_printf("rr\n");
 }
 
-void	rra(t_list **stack_a)
+void	apply_rra(t_list **stack_a)
 {
 	t_list	*temp;
 	t_list	*ptr;
@@ -68,15 +66,16 @@ void	rra(t_list **stack_a)
 		temp = *stack_a;
 		ptr = *stack_a;
 		while (ptr->next->next)
+		{
 			ptr = ptr->next;
+		}
 		*stack_a = ptr->next;
 		ptr->next = NULL;
 		(*stack_a)->next = temp;
 	}
-	ft_printf("rra\n");
 }
 
-void	rrb(t_list **stack_b)
+void	apply_rrb(t_list **stack_b)
 {
 	t_list	*temp;
 	t_list	*ptr;
@@ -91,10 +90,9 @@ void	rrb(t_list **stack_b)
 		ptr->next = NULL;
 		(*stack_b)->next = temp;
 	}
-	ft_printf("rrb\n");
 }
 
-void	rrr(t_list **stack_a, t_list **stack_b)
+void	apply_rrr(t_list **stack_a, t_list **stack_b)
 {
 	t_list	*temp;
 	t_list	*ptr;
@@ -119,5 +117,4 @@ void	rrr(t_list **stack_a, t_list **stack_b)
 		ptr->next = NULL;
 		(*stack_b)->next = temp;
 	}
-	ft_printf("rrr\n");
 }

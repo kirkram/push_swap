@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 12:31:10 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/09 17:34:49 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/10 15:48:36 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,5 +124,8 @@ void	assign_target_a(t_list *stack_a, t_list *stack_b);
 void	find_positions_and_minmax(t_list *stack);
 void	find_min_max(t_list *stack);
 void	assign_target_b(t_list *stack_a, t_list *stack_b);
+
+
+void	print_current_stack(t_list *stack_a, t_list *stack_b);
 
 #endif
