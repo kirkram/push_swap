@@ -1,36 +1,38 @@
-NAME = libft.a
+NAME = push_swap
+LIBFT_PATH = ./libft
+LIBFT = $(LIBFT_PATH)/libft.a
 CFLAGS = -Wall -Wextra -Werror
 DEBUGFLAGS = -g -fsanitize=address,undefined,integer
-SRCS = libft/ft_isalpha.c libft/ft_isdigit.c libft/ft_isalnum.c libft/ft_isascii.c libft/ft_isprint.c libft/ft_strlen.c libft/ft_memset.c libft/ft_bzero.c libft/ft_memcpy.c \
-	libft/ft_memmove.c libft/ft_strlcpy.c libft/ft_strlcat.c libft/ft_toupper.c libft/ft_tolower.c libft/ft_strchr.c libft/ft_strrchr.c libft/ft_strncmp.c libft/ft_memchr.c \
-	libft/ft_memcmp.c libft/ft_strnstr.c libft/ft_atoi.c libft/ft_calloc.c libft/ft_strdup.c libft/ft_substr.c libft/ft_strjoin.c libft/ft_strtrim.c libft/ft_split.c \
-	libft/ft_itoa.c libft/ft_strmapi.c libft/ft_striteri.c libft/ft_putchar_fd.c libft/ft_putstr_fd.c libft/ft_putendl_fd.c libft/ft_putnbr_fd.c
-BONUS_SRCS = libft/ft_lstnew_bonus.c libft/ft_lstadd_front_bonus.c libft/ft_lstsize_bonus.c libft/ft_lstlast_bonus.c libft/ft_lstadd_back_bonus.c libft/ft_lstdelone_bonus.c libft/ft_lstclear_bonus.c
-PRINTF_SRCS = printf/ft_printf.c printf/ft_putchar.c printf/ft_putstr.c
-PSWAP_SRCS = swap_main.c push_cheapest.c sort_3_and_4.c stack_operations.c stack_operations_2.c input_check.c \
+SRCS = swap_main.c push_cheapest.c sort_3_and_4.c stack_operations.c stack_operations_2.c input_check.c \
 	helper_functions.c create_stack.c assign_targets_and_positions.c prices.c rot_functions.c rot_push_cheapest.c
+BONUS_SRCS = checker_apply_bonus.c checker_main_bonus.c checker_stack_operations_2_bonus.c checker_stack_operations_bonus.c input_check.c helper_functions.c create_stack.c checker_stdin_bonus.c
+PRINTF_SRCS = printf/ft_printf.c printf/ft_putchar.c printf/ft_putstr.c
 OBJCTS = $(SRCS:.c=.o)
 BONUS_OBJCTS = $(BONUS_SRCS:.c=.o)
 PRINTF_OBJCTS = $(PRINTF_SRCS:.c=.o)
 LIBCR = ar rc libft.a $(OBJCTS) $(PRINTF_OBJCTS)
 RM = rm -f
 
+#ccf checker_apply_bonus.c checker_main_bonus.c checker_stack_operations_2_bonus.c checker_stack_operations_bonus.c libft.a input_check.c helper_functions.c create_stack.c checker_stdin_bonus.c -o checker
+
+
 all: $(NAME)
 
-$(NAME): $(OBJCTS) $(PRINTF_OBJCTS)
-	$(LIBCR)
+$(NAME):
+	$(LIBFT)
+	cc $(CFLAGS) $(SRCS) $(PRINTF_SRCS) libft.a -o push_swap
+
+$(LIBFT):
+	make -C $(LIBFT_PATH)
 
 bonus: .bonus
 
-.bonus: $(NAME) $(BONUS_OBJCTS)
-	$(LIBCR) $(BONUS_OBJCTS)
+.bonus: checker
+	cc $(CFLAGS) $(BONUS_SRCS) -o checker
 	touch .bonus
 
-pswap: 
-	cc $(CFLAGS) $(PSWAP_SRCS) libft.a -o push_swap
-
 debug:
-	cc $(DEBUGFLAGS) $(PSWAP_SRCS) libft.a  -o debug.out
+	cc $(DEBUGFLAGS) $(SRCS) libft.a  -o debug.out
 
 %.o: %.c
 	cc $(CFLAGS) -c $< -o $@
@@ -40,6 +42,7 @@ clean:
 	$(RM) .bonus
 
 fclean: clean
+	make -C $(LIBFT_PATH) fclean
 	$(RM) $(NAME) push_swap debug.out
 
 re: fclean all
