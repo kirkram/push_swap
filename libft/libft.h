@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 12:31:10 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/10 15:48:36 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/11 17:45:39 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,34 @@ void	find_positions_and_minmax(t_list *stack);
 void	find_min_max(t_list *stack);
 void	assign_target_b(t_list *stack_a, t_list *stack_b);
 
+#include <stdlib.h>
 
 void	print_current_stack(t_list *stack_a, t_list *stack_b);
+void	checker_hub(t_list **stack_a, t_list **stack_b, char **buf);
+
+int		checker_read_stdin(char **buf);
+int		check_rot_op(char *buf);
+int		check_push_op(char *buf);
+int		check_swap_op(char *buf);
+int		check_2_bytes(char *cache);
+int		check_3_bytes(char *cache);
+int		check_4_bytes(char *cache);
+int		stdin_to_buf(char **buf, char *cache, int bytes_read);
+
+void	apply_sa(t_list **stack_a);
+void	apply_sb(t_list **stack_b);
+void	apply_ss(t_list **stack_a, t_list **stack_b);
+void	apply_pa(t_list **stack_a, t_list **stack_b);
+void	apply_pb(t_list **stack_a, t_list **stack_b);
+void	apply_ra(t_list **stack_a);
+void	apply_rb(t_list **stack_b);
+void	apply_rr(t_list **stack_a, t_list **stack_b);
+void	apply_rra(t_list **stack_a);
+void	apply_rrb(t_list **stack_b);
+void	apply_rrr(t_list **stack_a, t_list **stack_b);
+
+void	apply_commands(t_list **stack_a, t_list **stack_b, char **buf);
+void	apply_commands_2b(t_list **stack_a, t_list **stack_b, char *command);
+void	apply_commands_3b(t_list **stack_a, t_list **stack_b, char *command);
 
 #endif
