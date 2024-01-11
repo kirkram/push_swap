@@ -6,12 +6,14 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 11:08:11 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/11 15:31:42 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/11 16:11:51 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft/libft.h"
 #include <stdlib.h>
+
+//ccf checker_stack_operations.c checker_stack_operations_2.c helper_functions.c input_check.c checker.c libft.a create_stack.c -o checker
 
 int		checker_read_stdin(char **buf);
 int		check_rot_op(char *buf);
@@ -64,23 +66,17 @@ int main(int ac, char **av)
 			if (!is_error && is_sorted(stack_a) && !stack_b)
 				ft_printf("OK\n");
 			else if (!is_error)
-			{
-				//print_current_stack(stack_a, stack_b);
 				ft_printf("KO\n");
-			}
-
 		}
 	}
 	else if (ac == 1)
 		return (0);
 	else
 		ft_putstr_fd("Error\n", 2);
+	free (buf);
 	ft_lstclear(&stack_a, NULL);
 	return (0);
 }
-
-//ccf checker_stack_operations.c checker_stack_operations_2.c helper_functions.c input_check.c checker.c libft.a create_stack.c -o checker
-
 
 int	checker_read_stdin(char **buf)
 {
@@ -94,16 +90,13 @@ int	checker_read_stdin(char **buf)
 	{
 		if (is_err)
 			break ;
-		bytes_read = read(0, cache, 50);
+		bytes_read = read(0, cache, 5);
 		if (bytes_read < 5 && bytes_read > 1)
 			is_err = stdin_to_buf(buf, cache, bytes_read);
 		else if (bytes_read == 0)
 			break ;
 		else
-		{
-			ft_printf("The bytes read is %d\n", bytes_read);
 			is_err = 1;
-		}
 		ft_bzero(cache, 5);
 	}
 	free (cache);
@@ -117,7 +110,6 @@ void	apply_commands(t_list **stack_a, t_list **stack_b, char **buf)
 	size_t	len;
 
 	split_buf = ft_split(*buf, '\n');
-	free (*buf);
 	i = 0;
 	while (split_buf[i])
 	{
