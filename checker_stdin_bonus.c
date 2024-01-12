@@ -6,11 +6,11 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 17:13:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/11 17:46:39 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/12 11:38:26 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
+#include "push_swap_checker.h"
 
 int	checker_read_stdin(char **buf)
 {

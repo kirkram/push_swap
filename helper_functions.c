@@ -6,12 +6,11 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 13:05:18 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/09 14:28:13 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/12 11:41:47 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "libft/libft.h"
+#include "push_swap.h"
 
 int	is_sorted(t_list *stack_a)
 {

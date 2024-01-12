@@ -6,12 +6,11 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 13:13:25 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/09 18:38:05 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/12 13:50:17 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
-#include <stdlib.h>
+#include "push_swap.h"
 
 int	check_input(int ac, char **av)
 {

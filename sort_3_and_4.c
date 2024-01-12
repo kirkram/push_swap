@@ -6,11 +6,11 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 16:51:32 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/09 16:52:11 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/12 11:40:33 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
+#include "push_swap.h"
 
 void	sort_3(t_list **stack_a)
 {

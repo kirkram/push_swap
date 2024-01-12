@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   checker_stack_operations.c                         :+:      :+:    :+:   */
+/*   checker_stack_operations_bonus.c                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 12:04:57 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/10 16:40:55 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/12 11:39:42 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
+#include "push_swap_checker.h"
 
 void	apply_sa(t_list **stack_a)
 {

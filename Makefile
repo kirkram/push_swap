@@ -16,14 +16,14 @@ RM = rm -f
 all: $(NAME)
 
 $(NAME): $(LIBFT)
-	cc $(CFLAGS) $(SRCS) $(PRINTF_SRCS) $(LIBFT) -o push_swap
+	cc $(CFLAGS) $(SRCS) $(PRINTF_SRCS) $(LIBFT) -o $(NAME)
 
 $(LIBFT):
 	make -C $(LIBFT_PATH)
 
 bonus: .bonus
 
-.bonus:
+.bonus: $(LIBFT)
 	cc $(CFLAGS) $(BONUS_SRCS) $(PRINTF_SRCS) $(LIBFT) -o checker
 	touch .bonus
 

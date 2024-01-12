@@ -6,11 +6,11 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 16:41:59 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/09 16:42:51 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/12 11:40:30 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
+#include "push_swap.h"
 
 void	rot_above_m(t_list **stack_a, t_list **stack_b, t_list *cheapest)
 {

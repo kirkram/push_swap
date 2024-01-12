@@ -6,11 +6,11 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 17:42:20 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/11 17:46:36 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/12 11:39:54 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
+#include "push_swap_checker.h"
 
 void	apply_commands(t_list **stack_a, t_list **stack_b, char **buf)
 {

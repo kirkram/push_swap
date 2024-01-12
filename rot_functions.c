@@ -6,11 +6,11 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 16:40:42 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/09 16:43:55 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/12 13:50:16 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
+#include "push_swap.h"
 
 void	final_rot(t_list **stack_a)
 {
@@ -44,7 +44,7 @@ void	rot_no_target(t_list **stack_a, t_list **stack_b, t_list *cheapest)
 	t_list	*min_n;
 
 	min_n = find_min(*stack_b);
-	if (cheapest->above_m && min_n->above_m)
+	if (cheapest->direction == 1)
 	{
 		while (*stack_a != cheapest && min_n->next)
 			rr(stack_a, stack_b);
@@ -53,7 +53,7 @@ void	rot_no_target(t_list **stack_a, t_list **stack_b, t_list *cheapest)
 		while (min_n->next)
 			rb(stack_b);
 	}
-	else if (!cheapest->above_m && !min_n->above_m)
+	else if (cheapest->direction == -1)
 	{
 		while (*stack_a != cheapest && min_n->next)
 			rrr(stack_a, stack_b);

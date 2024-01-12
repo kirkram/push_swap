@@ -6,11 +6,11 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 16:46:21 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/09 16:47:05 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/12 13:50:17 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
+#include "push_swap.h"
 
 void	assign_target_a(t_list *stack_a, t_list *stack_b)
 {
@@ -59,7 +59,7 @@ void	find_positions_and_minmax(t_list *stack)
 	while (ptr)
 	{
 		ptr->array_size = i;
-		if (ptr->current_position < (i + 1) / 2)
+		if (ptr->current_position <= (i + 1) / 2)
 			ptr->above_m = 1;
 		else
 			ptr->above_m = 0;

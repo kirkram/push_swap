@@ -6,14 +6,11 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 11:37:39 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/11 17:14:55 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/12 11:41:03 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "libft/libft.h"
-#include <string.h>
+#include "push_swap.h"
 #include <unistd.h>
 
 int	main(int ac, char **av)
