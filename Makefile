@@ -27,8 +27,8 @@ bonus: .bonus
 	cc $(CFLAGS) $(BONUS_SRCS) $(PRINTF_SRCS) $(LIBFT) -o checker
 	touch .bonus
 
-debug:
-	cc $(DEBUGFLAGS) $(SRCS) $(LIBFT) -o debug.out
+debug: $(LIBFT)
+	cc $(DEBUGFLAGS) $(SRCS) $(PRINTF_SRCS) $(LIBFT) -o debug.out
 
 %.o: %.c
 	cc $(CFLAGS) -c $< -o $@
@@ -39,7 +39,7 @@ clean:
 	
 fclean: clean
 	make -C $(LIBFT_PATH) fclean
-	$(RM) $(NAME) push_swap debug.out
+	$(RM) $(NAME) push_swap debug.out checker
 	$(RM) .bonus
 
 re: fclean all

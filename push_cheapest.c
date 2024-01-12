@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 16:48:24 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/12 14:19:24 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/12 15:16:29 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,6 @@ t_list	*find_cheapest(t_list **stack_a)
 	{
 		if (ptr_a->price < cheapest->price)
 			cheapest = ptr_a;
-		// else if (ptr_a->price == cheapest->price)
-		// 	if (ptr_a->max || ptr_a->min)
-		// 		cheapest = ptr_a;
 		ptr_a = ptr_a->next;
 	}
 	return (cheapest);

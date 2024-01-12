@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 16:40:42 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/12 13:50:16 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/12 15:16:26 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,10 @@ void	rot_notrgt_opp(t_list **a, t_list **b, t_list *cheapest, t_list *min_n)
 	else if (!cheapest->above_m)
 		while (*a != cheapest)
 			rra(a);
+	if (min_n->current_position < (min_n->array_size + 1) / 2)
+		min_n->above_m = 1;
+	else
+		min_n->above_m = 0;
 	if (min_n->above_m)
 		while (min_n->next)
 			rb(b);
