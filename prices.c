@@ -6,11 +6,11 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 16:39:20 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/09 18:50:34 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/01/12 13:10:26 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
+#include "push_swap.h"
 
 void	price_a(t_list *stack_a, t_list *stack_b)
 {
@@ -22,15 +22,18 @@ void	price_a(t_list *stack_a, t_list *stack_b)
 	while (stack_a)
 	{
 		target_node = stack_a->target;
+		if (!target_node)
+		{
+			//stack_a->price += 1; // because min_n  price is actually lower down
+			target_node = find_min(stack_b);
+		}
 		price_and_dir_up(stack_a, target_node);
 		price_and_dir_down(stack_a, target_node);
-		if (!target_node)
-			stack_a->price += 1;
 		if (target_node && stack_a->above_m != target_node->above_m)
 		{
-			if ((opposite_price(stack_a, target_node)) + 1 < stack_a->price)
+			if ((opposite_price(stack_a, target_node)) < stack_a->price)
 			{
-				stack_a->price = opposite_price(stack_a, target_node) + 1;
+				stack_a->price = opposite_price(stack_a, target_node);
 				stack_a->direction = 0;
 			}
 		}
