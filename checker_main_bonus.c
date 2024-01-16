@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap_checker.h"
+#include "push_swap_checker_bonus.h"
 
 int	main(int ac, char **av)
 {

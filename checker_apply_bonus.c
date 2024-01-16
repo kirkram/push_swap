@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap_checker.h"
+#include "push_swap_checker_bonus.h"
 
 void	apply_commands(t_list **stack_a, t_list **stack_b, char **buf)
 {

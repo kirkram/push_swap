@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap_checker.h"
+#include "push_swap_checker_bonus.h"
 
 int	checker_read_stdin(char **buf)
 {

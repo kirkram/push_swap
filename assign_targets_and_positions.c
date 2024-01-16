@@ -21,7 +21,7 @@ void	assign_target_a(t_list *stack_a, t_list *stack_b)
 	while (stack_a)
 	{
 		ptr_b = stack_b;
-		smallest_diff = LONG_MAX;
+		smallest_diff = 9223372036854775807;
 		stack_a->target = NULL;
 		while (ptr_b)
 		{
@@ -105,7 +105,7 @@ void	assign_target_b(t_list *stack_a, t_list *stack_b)
 	while (stack_b)
 	{
 		ptr_a = stack_a;
-		smallest_diff = LONG_MAX;
+		smallest_diff = 9223372036854775807;
 		stack_b->target = NULL;
 		while (ptr_a)
 		{
