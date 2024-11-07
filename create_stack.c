@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 13:37:34 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/12 13:50:13 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/11/07 21:01:19 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,11 @@
 t_list	*create_stack_a(int ac, char **av)
 {
 	t_list	*stack_a_head;
-	t_list	*list_ptr;
 	char	**str_array;
 	int		i;
 
 	i = 0;
 	stack_a_head = ft_lstnew(NULL);
-	list_ptr = stack_a_head;
 	if (ac == 2)
 	{
 		str_array = ft_split(av[1], ' ');
